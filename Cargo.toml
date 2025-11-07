@@ -1,0 +1,31 @@
+[package]
+name = "meta_oxide"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "A Rust library for extracting data from different types of microformats with Python bindings"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/yourusername/meta_oxide"
+readme = "README.md"
+keywords = ["microformats", "parser", "html", "metadata", "python"]
+categories = ["parser-implementations", "web-programming"]
+
+[lib]
+name = "meta_oxide"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+pyo3 = { version = "0.22", features = ["extension-module"] }
+scraper = "0.20"
+url = "2.5"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+
+[dev-dependencies]
+pyo3 = { version = "0.22", features = ["auto-initialize"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
