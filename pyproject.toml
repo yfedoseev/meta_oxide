@@ -46,6 +46,7 @@ dev = [
 ]
 
 [tool.maturin]
+features = ["python", "pyo3/extension-module"]
 python-source = "python"
 module-name = "meta_oxide"
 bindings = "pyo3"
