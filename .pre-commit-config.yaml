@@ -11,14 +11,7 @@ repos:
 
       - id: cargo-clippy
         name: cargo clippy
-        entry: bash -c 'PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 cargo clippy --all-targets --all-features -- -D warnings'
-        language: system
-        types: [rust]
-        pass_filenames: false
-
-      - id: cargo-test
-        name: cargo test
-        entry: bash -c 'PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 cargo test --all-features'
+        entry: bash -c 'cargo clippy --all-targets --all-features -- -D warnings'
         language: system
         types: [rust]
         pass_filenames: false

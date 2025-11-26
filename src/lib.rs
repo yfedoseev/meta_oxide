@@ -11,7 +11,6 @@ use std::collections::HashMap;
 mod errors;
 mod extractors;
 pub mod ffi;
-#[cfg(feature = "python")]
 #[macro_use]
 mod macros;
 mod parser;
@@ -20,8 +19,7 @@ mod types;
 pub use errors::{MicroformatError, Result};
 pub use types::*;
 
-// Re-export utilities needed by macros
-#[cfg(feature = "python")]
+// Re-export utilities needed by macros (required for macro expansion, not Python-specific)
 #[doc(hidden)]
 pub use extractors::common::{html_utils, url_utils};
 
