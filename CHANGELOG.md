@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Validation utilities
 - Performance optimizations
 
+## [0.1.1] - 2025-11-25
+
+### Fixed
+- **Architecture Optimization**: Separated Python bindings from default Rust features
+  - Removed "python" from default Cargo features
+  - Pure Rust users now build without PyO3 overhead
+  - Python feature only enabled when building with maturin
+  - Zero impact on functionality, pure optimization
+
 ## [0.1.0] - 2025-11-25
 
 ### Added - Phase 8: RDFa Support ✨

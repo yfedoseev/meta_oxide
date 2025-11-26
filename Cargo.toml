@@ -1,6 +1,6 @@
 [package]
 name = "meta_oxide"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Yury Fedoseev <yfedoseev@gmail.com>"]
 description = "Universal metadata extraction library supporting 13 formats (HTML Meta, Open Graph, Twitter Cards, JSON-LD, Microdata, Microformats, RDFa, Dublin Core, Web App Manifest, oEmbed, rel-links, Images, SEO) with 7 language bindings"
