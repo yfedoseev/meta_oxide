@@ -193,7 +193,7 @@ def test_real_world_wordpress_with_verification():
     assert meta["google_site_verification"] == "wordpress_google_123"
     assert meta["google_analytics"] == "UA-WORDPRESS-1"
     assert meta["fb_app_id"] == "1234567890123"
-    assert meta["canonical"] == "https://example.com/"
+    assert meta["canonical"] == "https://example.com"
 
 
 def test_real_world_shopify_with_verification():

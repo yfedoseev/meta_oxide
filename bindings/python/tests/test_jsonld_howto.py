@@ -603,10 +603,7 @@ class TestHowToComplete:
                 "@context": "https://schema.org",
                 "@type": "HowTo",
                 "name": "How to Build a Wooden Planter Box",
-                "description": (
-                    "A comprehensive guide to building a beautiful "
-                    "wooden planter box for your garden"
-                ),
+                "description": "A comprehensive guide to building a beautiful wooden planter box for your garden",
                 "image": [
                     "https://example.com/planter-1.jpg",
                     "https://example.com/planter-2.jpg"
@@ -649,29 +646,20 @@ class TestHowToComplete:
                     {
                         "@type": "HowToStep",
                         "name": "Cut the boards",
-                        "text": (
-                            "Cut the cedar boards to size: 4 pieces at 24 inches "
-                            "for sides, 4 pieces at 12 inches for ends"
-                        ),
-                        "position": 1,
+                        "text": "Cut the cedar boards to size: 4 pieces at 24 inches for sides, 4 pieces at 12 inches for ends",
+                        "position": 1
                     },
                     {
                         "@type": "HowToStep",
                         "name": "Assemble the frame",
-                        "text": (
-                            "Use wood screws to attach the side pieces to the "
-                            "end pieces, creating a rectangular frame"
-                        ),
-                        "position": 2,
+                        "text": "Use wood screws to attach the side pieces to the end pieces, creating a rectangular frame",
+                        "position": 2
                     },
                     {
                         "@type": "HowToStep",
                         "name": "Apply finish",
-                        "text": (
-                            "Sand the assembled box and apply wood stain for "
-                            "weather protection"
-                        ),
-                        "position": 3,
+                        "text": "Sand the assembled box and apply wood stain for weather protection",
+                        "position": 3
                     }
                 ],
                 "url": "https://example.com/how-to-build-planter-box",

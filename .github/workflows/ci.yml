@@ -85,7 +85,7 @@ jobs:
         run: pip install pytest pytest-cov
 
       - name: Run Python tests
-        run: pytest python/tests/ -v --cov=meta_oxide --cov-report=xml
+        run: pytest bindings/python/tests/ -v --cov=meta_oxide --cov-report=xml
 
       - name: Upload coverage
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'

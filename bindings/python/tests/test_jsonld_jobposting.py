@@ -334,14 +334,8 @@ class TestJobPostingComplete:
                         "unitText": "YEAR"
                     }
                 },
-                "qualifications": (
-                    "Bachelor's degree in Computer Science or equivalent experience. "
-                    "5+ years of Python development."
-                ),
-                "responsibilities": (
-                    "Design and develop scalable Python applications. "
-                    "Mentor junior developers. Participate in code reviews."
-                ),
+                "qualifications": "Bachelor's degree in Computer Science or equivalent experience. 5+ years of Python development.",
+                "responsibilities": "Design and develop scalable Python applications. Mentor junior developers. Participate in code reviews.",
                 "url": "https://example.com/jobs/senior-python-dev",
                 "workHours": "40 hours per week"
             }
@@ -366,13 +360,13 @@ class TestJobPostingComplete:
         assert "hiringOrganization" in job
         assert "jobLocation" in job
         assert "baseSalary" in job
-        assert job["qualifications"] == (
-            "Bachelor's degree in Computer Science or equivalent experience. "
-            "5+ years of Python development."
+        assert (
+            job["qualifications"]
+            == "Bachelor's degree in Computer Science or equivalent experience. 5+ years of Python development."
         )
-        assert job["responsibilities"] == (
-            "Design and develop scalable Python applications. "
-            "Mentor junior developers. Participate in code reviews."
+        assert (
+            job["responsibilities"]
+            == "Design and develop scalable Python applications. Mentor junior developers. Participate in code reviews."
         )
         assert job["url"] == "https://example.com/jobs/senior-python-dev"
         assert job["workHours"] == "40 hours per week"
@@ -423,14 +417,8 @@ class TestJobPostingRealistic:
                         "unitText": "YEAR"
                     }
                 },
-                "qualifications": (
-                    "MS/PhD in Computer Science, Machine Learning, or related field. "
-                    "Experience with PyTorch or TensorFlow."
-                ),
-                "responsibilities": (
-                    "Develop and deploy ML models. Research new algorithms. "
-                    "Collaborate with cross-functional teams."
-                ),
+                "qualifications": "MS/PhD in Computer Science, Machine Learning, or related field. Experience with PyTorch or TensorFlow.",
+                "responsibilities": "Develop and deploy ML models. Research new algorithms. Collaborate with cross-functional teams.",
                 "educationRequirements": {
                     "@type": "EducationalOccupationalCredential",
                     "credentialCategory": "degree"

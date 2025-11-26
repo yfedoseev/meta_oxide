@@ -22,7 +22,7 @@ def test_opengraph_all_basic_fields():
     assert isinstance(og, dict)
     assert og["title"] == "Test Title"
     assert og["type"] == "article"
-    assert og["url"] == "https://example.com/"
+    assert og["url"] == "https://example.com"
     assert og["image"] == "https://example.com/image.jpg"
     assert og["description"] == "Test Description"
     assert og["site_name"] == "Test Site"

@@ -29,24 +29,15 @@ pub mod url_utils {
 
     /// Resolve a URL (possibly relative) against a base URL
     pub fn resolve_url(base_url: Option<&str>, url: &str) -> Result<String, ParseError> {
-        let result = if let Some(base) = base_url {
+        if let Some(base) = base_url {
             let base_parsed = Url::parse(base)?;
             let resolved = base_parsed.join(url)?;
-            resolved.to_string()
+            Ok(resolved.to_string())
         } else {
             // If no base URL, try parsing as absolute
             let parsed = Url::parse(url)?;
-            parsed.to_string()
-        };
-
-        // Strip trailing slash from URLs that only have a domain (no path)
-        // e.g., "https://example.com/" -> "https://example.com"
-        // but keep "https://example.com/path/" as is
-        Ok(if result.ends_with('/') && result.matches('/').count() == 3 {
-            result.trim_end_matches('/').to_string()
-        } else {
-            result
-        })
+            Ok(parsed.to_string())
+        }
     }
 
     /// Check if a URL is valid
@@ -103,13 +94,13 @@ mod tests {
     #[test]
     fn test_resolve_url_absolute() {
         let result = url_utils::resolve_url(Some("https://example.com/"), "https://other.com/");
-        assert_eq!(result.unwrap(), "https://other.com");
+        assert_eq!(result.unwrap(), "https://other.com/");
     }
 
     #[test]
     fn test_resolve_url_no_base() {
         let result = url_utils::resolve_url(None, "https://example.com/");
-        assert_eq!(result.unwrap(), "https://example.com");
+        assert_eq!(result.unwrap(), "https://example.com/");
     }
 
     #[test]
@@ -167,10 +158,10 @@ mod tests {
     #[test]
     fn test_resolve_url_empty_string() {
         // Test with empty relative URL
-        let result = url_utils::resolve_url(Some("https://example.com"), "");
+        let result = url_utils::resolve_url(Some("https://example.com/"), "");
         // Empty string resolves to base URL
         assert!(result.is_ok());
-        assert_eq!(result.unwrap(), "https://example.com");
+        assert_eq!(result.unwrap(), "https://example.com/");
     }
 
     #[test]

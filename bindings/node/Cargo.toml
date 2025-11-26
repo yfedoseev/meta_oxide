@@ -1,0 +1,17 @@
+[package]
+name = "meta-oxide-node"
+version = "0.1.1"
+edition = "2021"
+publish = false
+
+[dependencies]
+napi = { version = "2.15", features = ["napi8"] }
+napi-derive = "2.15"
+meta_oxide = { path = "../.." }
+serde_json = "1.0"
+
+[build-dependencies]
+napi-build = "2.1"
+
+[lib]
+crate-type = ["cdylib"]

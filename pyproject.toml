@@ -47,12 +47,12 @@ dev = [
 
 [tool.maturin]
 features = ["python", "pyo3/extension-module"]
-python-source = "python"
+python-source = "bindings/python"
 module-name = "meta_oxide"
 bindings = "pyo3"
 
 [tool.pytest.ini_options]
-testpaths = ["python/tests"]
+testpaths = ["bindings/python/tests"]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
@@ -71,7 +71,7 @@ ignore = ["ANN101", "ANN102", "PLR0913"]
 
 [tool.ruff.lint.per-file-ignores]
 "examples/*.py" = ["T201", "ANN201", "PLR2004"]  # Allow print, missing return type, and magic values in examples
-"python/tests/*.py" = ["ANN201", "PLR2004"]  # Allow missing return type and magic values in tests
+"bindings/python/tests/*.py" = ["ANN201", "PLR2004"]  # Allow missing return type and magic values in tests
 
 [tool.mypy]
 python_version = "3.8"

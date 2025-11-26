@@ -39,8 +39,8 @@ def test_extract_with_url_properties():
 
     items = meta_oxide.extract_microdata(html)
     assert len(items) == 1
-    # URL normalization adds trailing slash
-    assert items[0]["url"] == "https://example.com/"
+    # URLs are normalized but trailing slashes are preserved as-is
+    assert items[0]["url"] == "https://example.com"
     assert items[0]["image"] == "https://example.com/photo.jpg"
 
 

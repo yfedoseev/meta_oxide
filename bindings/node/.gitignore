@@ -1,0 +1,8 @@
+node_modules/
+target/
+*.node
+*.so
+*.dylib
+*.log
+index.d.ts
+index.js
