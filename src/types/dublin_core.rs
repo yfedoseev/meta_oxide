@@ -62,6 +62,7 @@ pub struct DublinCore {
 }
 
 // Python conversion implementations
+#[cfg(feature = "python")]
 impl DublinCore {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);

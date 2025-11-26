@@ -13,6 +13,7 @@ pub struct MicroformatItem {
     pub children: Option<Vec<MicroformatItem>>,
 }
 
+#[cfg(feature = "python")]
 impl MicroformatItem {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -46,6 +47,7 @@ pub enum PropertyValue {
     Nested(Box<MicroformatItem>),
 }
 
+#[cfg(feature = "python")]
 impl PropertyValue {
     pub fn to_python(&self, py: Python) -> PyObject {
         match self {
@@ -68,6 +70,7 @@ pub struct HCard {
     pub additional_properties: HashMap<String, Vec<String>>,
 }
 
+#[cfg(feature = "python")]
 impl HCard {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -116,6 +119,7 @@ pub struct HEntry {
     pub additional_properties: HashMap<String, Vec<String>>,
 }
 
+#[cfg(feature = "python")]
 impl HEntry {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -166,6 +170,7 @@ pub struct HEvent {
     pub additional_properties: HashMap<String, Vec<String>>,
 }
 
+#[cfg(feature = "python")]
 impl HEvent {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -230,6 +235,7 @@ pub struct HReview {
     pub additional_properties: HashMap<String, Vec<String>>,
 }
 
+#[cfg(feature = "python")]
 impl HReview {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -312,6 +318,7 @@ pub struct HRecipe {
     pub additional_properties: HashMap<String, Vec<String>>,
 }
 
+#[cfg(feature = "python")]
 impl HRecipe {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -373,6 +380,7 @@ pub struct HProduct {
     pub additional_properties: HashMap<String, Vec<String>>,
 }
 
+#[cfg(feature = "python")]
 impl HProduct {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -423,6 +431,7 @@ pub struct HFeed {
     pub additional_properties: HashMap<String, Vec<String>>,
 }
 
+#[cfg(feature = "python")]
 impl HFeed {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -461,6 +470,7 @@ pub struct HAdr {
     pub additional_properties: HashMap<String, Vec<String>>,
 }
 
+#[cfg(feature = "python")]
 impl HAdr {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -504,6 +514,7 @@ pub struct HGeo {
     pub additional_properties: HashMap<String, Vec<String>>,
 }
 
+#[cfg(feature = "python")]
 impl HGeo {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);

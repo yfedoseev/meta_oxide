@@ -72,7 +72,10 @@ impl MicrodataItem {
     pub fn add_item_property(&mut self, name: String, item: MicrodataItem) {
         self.properties.entry(name).or_default().push(PropertyValue::Item(Box::new(item)));
     }
+}
 
+#[cfg(feature = "python")]
+impl MicrodataItem {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);

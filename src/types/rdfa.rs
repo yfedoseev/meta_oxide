@@ -82,7 +82,10 @@ impl RdfaItem {
     pub fn add_property(&mut self, name: String, value: RdfaValue) {
         self.properties.entry(name).or_default().push(value);
     }
+}
 
+#[cfg(feature = "python")]
+impl RdfaItem {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -121,6 +124,7 @@ impl RdfaItem {
     }
 }
 
+#[cfg(feature = "python")]
 impl RdfaValue {
     /// Convert to Python value
     pub fn to_py_value(&self, py: Python) -> PyObject {

@@ -60,6 +60,7 @@ impl OEmbedDiscovery {
 }
 
 // Python conversion implementations
+#[cfg(feature = "python")]
 impl OEmbedEndpoint {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -82,6 +83,7 @@ impl OEmbedEndpoint {
     }
 }
 
+#[cfg(feature = "python")]
 impl OEmbedDiscovery {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);

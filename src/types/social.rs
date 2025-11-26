@@ -234,6 +234,7 @@ pub struct TwitterPlayer {
 
 // Python conversion implementations
 
+#[cfg(feature = "python")]
 impl OpenGraph {
     /// Convert OpenGraph to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -300,6 +301,7 @@ impl OpenGraph {
     }
 }
 
+#[cfg(feature = "python")]
 impl OgImage {
     /// Convert OgImage to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -324,6 +326,7 @@ impl OgImage {
     }
 }
 
+#[cfg(feature = "python")]
 impl OgVideo {
     /// Convert OgVideo to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -345,6 +348,7 @@ impl OgVideo {
     }
 }
 
+#[cfg(feature = "python")]
 impl OgAudio {
     /// Convert OgAudio to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -360,6 +364,7 @@ impl OgAudio {
     }
 }
 
+#[cfg(feature = "python")]
 impl OgArticle {
     /// Convert OgArticle to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -386,6 +391,7 @@ impl OgArticle {
     }
 }
 
+#[cfg(feature = "python")]
 impl OgBook {
     /// Convert OgBook to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -406,6 +412,7 @@ impl OgBook {
     }
 }
 
+#[cfg(feature = "python")]
 impl OgProfile {
     /// Convert OgProfile to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -426,6 +433,7 @@ impl OgProfile {
     }
 }
 
+#[cfg(feature = "python")]
 impl TwitterCard {
     /// Convert TwitterCard to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -471,6 +479,7 @@ impl TwitterCard {
     }
 }
 
+#[cfg(feature = "python")]
 impl TwitterApp {
     /// Convert TwitterApp to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -509,6 +518,7 @@ impl TwitterApp {
     }
 }
 
+#[cfg(feature = "python")]
 impl TwitterPlayer {
     /// Convert TwitterPlayer to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {

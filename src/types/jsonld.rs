@@ -823,6 +823,7 @@ pub struct AggregateRating {
 }
 
 /// Helper function to convert serde_json::Value to Python objects recursively
+#[cfg(feature = "python")]
 fn json_value_to_py(py: Python, value: &Value) -> PyObject {
     match value {
         Value::String(s) => s.to_object(py),
@@ -855,6 +856,7 @@ fn json_value_to_py(py: Python, value: &Value) -> PyObject {
 }
 
 // Python conversion for JsonLdObject
+#[cfg(feature = "python")]
 impl JsonLdObject {
     /// Convert JsonLdObject to Python dictionary
     ///

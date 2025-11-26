@@ -147,6 +147,7 @@ impl RobotsDirective {
 }
 
 // Python conversion implementations
+#[cfg(feature = "python")]
 impl MetaTags {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -299,6 +300,7 @@ impl MetaTags {
     }
 }
 
+#[cfg(feature = "python")]
 impl RobotsDirective {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -327,6 +329,7 @@ impl RobotsDirective {
     }
 }
 
+#[cfg(feature = "python")]
 impl AlternateLink {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);
@@ -344,6 +347,7 @@ impl AlternateLink {
     }
 }
 
+#[cfg(feature = "python")]
 impl FeedLink {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
         let dict = PyDict::new_bound(py);

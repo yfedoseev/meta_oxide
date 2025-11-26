@@ -176,6 +176,7 @@ pub struct ManifestDiscovery {
     pub manifest: Option<WebAppManifest>,
 }
 
+#[cfg(feature = "python")]
 impl WebAppManifest {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -266,6 +267,7 @@ impl WebAppManifest {
     }
 }
 
+#[cfg(feature = "python")]
 impl ManifestIcon {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -284,6 +286,7 @@ impl ManifestIcon {
     }
 }
 
+#[cfg(feature = "python")]
 impl RelatedApplication {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -299,6 +302,7 @@ impl RelatedApplication {
     }
 }
 
+#[cfg(feature = "python")]
 impl ManifestImage {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -317,6 +321,7 @@ impl ManifestImage {
     }
 }
 
+#[cfg(feature = "python")]
 impl ManifestShortcut {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
@@ -340,6 +345,7 @@ impl ManifestShortcut {
     }
 }
 
+#[cfg(feature = "python")]
 impl ManifestDiscovery {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
