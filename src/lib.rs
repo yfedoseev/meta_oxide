@@ -718,6 +718,7 @@ mod integration_tests {
     use super::*;
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_basic() {
         Python::with_gil(|py| {
             let html = r#"
@@ -734,6 +735,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_with_opengraph() {
         Python::with_gil(|py| {
             let html = r#"
@@ -750,6 +752,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_with_jsonld() {
         Python::with_gil(|py| {
             let html = r#"
@@ -767,6 +770,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_with_microdata() {
         Python::with_gil(|py| {
             let html = r#"
@@ -784,6 +788,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_with_microformats() {
         Python::with_gil(|py| {
             let html = r#"
@@ -797,6 +802,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_with_base_url() {
         Python::with_gil(|py| {
             let html = r#"
@@ -812,6 +818,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_comprehensive() {
         Python::with_gil(|py| {
             let html = r#"
@@ -842,6 +849,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_empty_html() {
         Python::with_gil(|py| {
             let html = "<html><head></head></html>";
@@ -851,6 +859,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_with_malformed_jsonld() {
         Python::with_gil(|py| {
             let html = r#"
@@ -870,6 +879,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_with_dublin_core() {
         Python::with_gil(|py| {
             let html = r#"
@@ -885,6 +895,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_with_oembed() {
         Python::with_gil(|py| {
             let html = r#"
@@ -901,6 +912,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_with_rel_links() {
         Python::with_gil(|py| {
             let html = r#"
@@ -917,6 +929,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_multiple_formats_overlap() {
         Python::with_gil(|py| {
             // News article with both OG and JSON-LD
@@ -944,6 +957,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_unicode_content() {
         Python::with_gil(|py| {
             let html = r#"
@@ -960,6 +974,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_html_entities() {
         Python::with_gil(|py| {
             let html = r#"
@@ -976,6 +991,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_with_comments() {
         Python::with_gil(|py| {
             let html = r#"
@@ -993,6 +1009,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_deeply_nested() {
         Python::with_gil(|py| {
             let mut html = String::from("<html><body>");
@@ -1011,6 +1028,7 @@ mod integration_tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_extract_all_many_items() {
         Python::with_gil(|py| {
             let mut html = String::from("<html><body>");

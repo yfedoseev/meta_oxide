@@ -421,6 +421,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_manifest_to_py_dict() {
         Python::with_gil(|py| {
             let manifest = WebAppManifest {
@@ -438,6 +439,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_manifest_icon_to_py_dict() {
         Python::with_gil(|py| {
             let icon = ManifestIcon {
@@ -492,6 +494,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_manifest_discovery_to_py_dict() {
         Python::with_gil(|py| {
             let discovery =

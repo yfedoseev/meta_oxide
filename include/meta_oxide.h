@@ -311,4 +311,4 @@ void meta_oxide_manifest_discovery_free(struct ManifestDiscovery *discovery);
  */
 const char *meta_oxide_version(void);
 
-#endif  /* META_OXIDE_H */
+#endif /* META_OXIDE_H */

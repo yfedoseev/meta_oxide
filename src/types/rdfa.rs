@@ -302,6 +302,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_to_py_dict_basic() {
         Python::with_gil(|py| {
             let mut item = RdfaItem::new().with_type(vec!["https://schema.org/Person".to_string()]);
@@ -316,6 +317,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_to_py_dict_with_vocab() {
         Python::with_gil(|py| {
             let item = RdfaItem::new().with_vocab("https://schema.org/".to_string());
@@ -328,6 +330,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_to_py_dict_with_about() {
         Python::with_gil(|py| {
             let item = RdfaItem::new().with_about("https://example.com/jane".to_string());
@@ -340,6 +343,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_to_py_dict_multiple_values() {
         Python::with_gil(|py| {
             let mut item = RdfaItem::new();
@@ -357,6 +361,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_to_py_dict_nested_item() {
         Python::with_gil(|py| {
             let mut item = RdfaItem::new();
@@ -379,6 +384,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_rdfa_value_to_py_literal() {
         Python::with_gil(|py| {
             let value = RdfaValue::Literal("test".to_string());
@@ -389,6 +395,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_rdfa_value_to_py_resource() {
         Python::with_gil(|py| {
             let value = RdfaValue::Resource("https://example.com".to_string());
@@ -399,6 +406,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_rdfa_value_to_py_typed_literal() {
         Python::with_gil(|py| {
             let value = RdfaValue::TypedLiteral {
@@ -413,6 +421,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_rdfa_value_to_py_nested_item() {
         Python::with_gil(|py| {
             let item = RdfaItem::new().with_type(vec!["Person".to_string()]);

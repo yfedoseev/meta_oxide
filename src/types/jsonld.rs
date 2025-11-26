@@ -1097,6 +1097,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_jsonld_object_to_py_dict() {
         Python::with_gil(|py| {
             let json = r#"{

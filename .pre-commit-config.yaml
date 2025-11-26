@@ -1,9 +1,23 @@
 repos:
-  # Rust formatting
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+
+  # Rust checks
   - repo: local
     hooks:
       - id: cargo-fmt
         name: cargo fmt
+        description: Check Rust code formatting
         entry: bash -c 'cargo fmt --all -- --check'
         language: system
         types: [rust]
@@ -11,16 +25,27 @@ repos:
 
       - id: cargo-clippy
         name: cargo clippy
+        description: Lint Rust code with clippy
         entry: bash -c 'cargo clippy --all-targets --all-features -- -D warnings'
         language: system
         types: [rust]
         pass_filenames: false
+
+      - id: cargo-test-no-default-features
+        name: cargo test (--no-default-features)
+        description: Run Rust tests without Python feature (Node.js compatibility)
+        entry: bash -c 'cargo test --lib --no-default-features'
+        language: system
+        types: [rust]
+        pass_filenames: false
+        # Note: cargo test --all-features runs in CI/CD with proper Python setup
 
   # Python formatting and linting
   - repo: https://github.com/psf/black
     rev: 24.10.0
     hooks:
       - id: black
+        language_version: python3
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.7.0
@@ -33,3 +58,6 @@ repos:
     hooks:
       - id: mypy
         args: [--ignore-missing-imports, --no-strict-optional]
+
+  # Note: Full Python testing (maturin develop, pytest) runs in CI/CD
+  # Pre-commit hooks focus on fast linting and formatting checks

@@ -208,6 +208,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_to_py_dict_basic() {
         Python::with_gil(|py| {
             let mut item =
@@ -223,6 +224,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_to_py_dict_with_nested_item() {
         Python::with_gil(|py| {
             let mut item =
@@ -244,6 +246,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "python")]
     fn test_to_py_dict_multiple_values() {
         Python::with_gil(|py| {
             let mut item = MicrodataItem::new();
