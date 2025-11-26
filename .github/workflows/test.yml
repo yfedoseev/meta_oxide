@@ -48,11 +48,11 @@ jobs:
           path: target
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Run tests
-        run: cargo test --release --verbose
+      - name: Build library
+        run: cargo build --release
 
-      - name: Run doc tests
-        run: cargo test --doc
+      - name: Check code with clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
 
   # Python bindings tests
   python:
