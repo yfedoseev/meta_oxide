@@ -1,6 +1,6 @@
 {
   "name": "@yfedoseev/meta-oxide-wasm",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "WebAssembly bindings for MetaOxide - Universal metadata extraction library",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -20,7 +20,7 @@
     "test:coverage": "jest --coverage",
     "lint": "tsc --noEmit && eslint lib/**/*.ts",
     "format": "prettier --write 'lib/**/*.{ts,js}' 'examples/**/*.{ts,js}' 'tests/**/*.ts'",
-    "prepublishOnly": "npm run build:all && npm test"
+    "prepublishOnly": "echo 'Note: WASM builds require Rust toolchain with wasm32 target. See README.md for build instructions.'"
   },
   "repository": {
     "type": "git",
