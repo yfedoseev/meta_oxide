@@ -1,0 +1,39 @@
+[package]
+name = "meta_oxide"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "Universal metadata extraction library supporting 13 formats (HTML Meta, Open Graph, Twitter Cards, JSON-LD, Microdata, Microformats, RDFa, Dublin Core, Web App Manifest, oEmbed, rel-links, Images, SEO) with 7 language bindings"
+readme = "README.md"
+
+[lib]
+name = "meta_oxide"
+crate-type = ["cdylib", "rlib", "staticlib"]
+
+[features]
+default = []
+python = ["pyo3"]
+c-api = []
+
+[dependencies]
+pyo3 = { workspace = true, optional = true }
+scraper.workspace = true
+url.workspace = true
+serde = { workspace = true }
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+pyo3 = { workspace = true, features = ["auto-initialize"] }
+
+[build-dependencies]
+cbindgen.workspace = true
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3

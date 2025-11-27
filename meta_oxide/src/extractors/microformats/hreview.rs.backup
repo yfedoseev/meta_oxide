@@ -1,0 +1,274 @@
+use crate::errors::Result;
+use crate::extractors::common::html_utils;
+use crate::types::HReview;
+use std::collections::HashMap;
+
+/// Extract h-review microformats from HTML
+pub fn extract(html: &str, _base_url: Option<&str>) -> Result<Vec<HReview>> {
+    let document = html_utils::parse_html(html);
+    let mut reviews = Vec::new();
+
+    let selector = html_utils::create_selector(".h-review")?;
+
+    for element in document.select(&selector) {
+        let mut review = HReview {
+            // Modern microformats2 properties
+            name: None,
+            content: None,
+            published: None,
+            // Legacy properties
+            summary: None,
+            dtreviewed: None,
+            description: None,
+            // Rating properties
+            rating: None,
+            best: None,
+            worst: None,
+            // Item being reviewed
+            item: None,
+            item_product: None,
+            // Reviewer
+            reviewer: None,
+            reviewer_card: None,
+            url: None,
+            additional_properties: HashMap::new(),
+        };
+
+        // Extract name (p-name) - modern microformats2
+        let name_sel = html_utils::create_selector(".p-name")?;
+        if let Some(name_elem) = element.select(&name_sel).next() {
+            review.name = html_utils::extract_text(&name_elem);
+        }
+
+        // Extract summary (p-summary) - legacy, for backward compatibility
+        let summary_sel = html_utils::create_selector(".p-summary")?;
+        if let Some(summary_elem) = element.select(&summary_sel).next() {
+            review.summary = html_utils::extract_text(&summary_elem);
+        }
+
+        // Extract content (e-content) - modern microformats2
+        let content_sel = html_utils::create_selector(".e-content")?;
+        if let Some(content_elem) = element.select(&content_sel).next() {
+            let content = content_elem.inner_html().trim().to_string();
+            if !content.is_empty() {
+                review.content = Some(content);
+            }
+        }
+
+        // Extract description (p-description or e-description) - legacy
+        if review.content.is_none() {
+            let desc_sel = html_utils::create_selector(".p-description, .e-description")?;
+            if let Some(desc_elem) = element.select(&desc_sel).next() {
+                review.description = html_utils::extract_text(&desc_elem);
+            }
+        }
+
+        // Extract rating (p-rating)
+        let rating_sel = html_utils::create_selector(".p-rating")?;
+        if let Some(rating_elem) = element.select(&rating_sel).next() {
+            if let Some(text) = html_utils::extract_text(&rating_elem) {
+                // Try to parse as float
+                if let Ok(r) = text.trim().parse::<f32>() {
+                    review.rating = Some(r);
+                }
+            }
+        }
+
+        // Extract best rating (p-best)
+        let best_sel = html_utils::create_selector(".p-best")?;
+        if let Some(best_elem) = element.select(&best_sel).next() {
+            if let Some(text) = html_utils::extract_text(&best_elem) {
+                if let Ok(b) = text.trim().parse::<f32>() {
+                    review.best = Some(b);
+                }
+            }
+        }
+
+        // Extract worst rating (p-worst)
+        let worst_sel = html_utils::create_selector(".p-worst")?;
+        if let Some(worst_elem) = element.select(&worst_sel).next() {
+            if let Some(text) = html_utils::extract_text(&worst_elem) {
+                if let Ok(w) = text.trim().parse::<f32>() {
+                    review.worst = Some(w);
+                }
+            }
+        }
+
+        // Extract reviewer - check for nested h-card first
+        let reviewer_card_sel = html_utils::create_selector(".p-reviewer.h-card")?;
+        if let Some(reviewer_elem) = element.select(&reviewer_card_sel).next() {
+            // Extract nested h-card
+            let reviewer_html = reviewer_elem.html();
+            if let Ok(cards) = super::hcard::extract(&reviewer_html, None) {
+                if let Some(card) = cards.first() {
+                    review.reviewer_card = Some(Box::new(card.clone()));
+                }
+            }
+        } else {
+            // Extract simple text reviewer (p-reviewer without h-card)
+            let reviewer_sel = html_utils::create_selector(".p-reviewer")?;
+            if let Some(reviewer_elem) = element.select(&reviewer_sel).next() {
+                review.reviewer = html_utils::extract_text(&reviewer_elem);
+            }
+        }
+
+        // Extract item being reviewed - check for nested h-product first
+        let item_product_sel = html_utils::create_selector(".p-item.h-product")?;
+        if let Some(item_elem) = element.select(&item_product_sel).next() {
+            // Extract nested h-product
+            let item_html = item_elem.html();
+            if let Ok(products) = super::hproduct::extract(&item_html, None) {
+                if let Some(product) = products.first() {
+                    review.item_product = Some(Box::new(product.clone()));
+                }
+            }
+        } else {
+            // Extract simple text item (p-item without h-product)
+            let item_sel = html_utils::create_selector(".p-item")?;
+            if let Some(item_elem) = element.select(&item_sel).next() {
+                review.item = html_utils::extract_text(&item_elem);
+            }
+        }
+
+        // Extract published date (dt-published) - modern microformats2
+        let pub_sel = html_utils::create_selector(".dt-published")?;
+        if let Some(pub_elem) = element.select(&pub_sel).next() {
+            review.published = html_utils::get_attr(&pub_elem, "datetime")
+                .or_else(|| html_utils::extract_text(&pub_elem));
+        }
+
+        // Extract review date (dt-reviewed) - legacy, for backward compatibility
+        let dtreviewed_sel = html_utils::create_selector(".dt-reviewed")?;
+        if let Some(dt_elem) = element.select(&dtreviewed_sel).next() {
+            review.dtreviewed = html_utils::get_attr(&dt_elem, "datetime")
+                .or_else(|| html_utils::extract_text(&dt_elem));
+        }
+
+        // Extract URL (u-url)
+        let url_sel = html_utils::create_selector(".u-url")?;
+        if let Some(url_elem) = element.select(&url_sel).next() {
+            review.url = html_utils::get_attr(&url_elem, "href");
+        }
+
+        reviews.push(review);
+    }
+
+    Ok(reviews)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_extract_hreview() {
+        let html = r#"
+            <div class="h-review">
+                <span class="p-summary">Great product!</span>
+                <span class="p-rating">4.5</span>
+                <span class="p-reviewer">John Doe</span>
+                <span class="p-item">Laptop</span>
+            </div>
+        "#;
+
+        let reviews = extract(html, None).unwrap();
+        assert_eq!(reviews.len(), 1);
+        assert_eq!(reviews[0].summary, Some("Great product!".to_string()));
+        assert_eq!(reviews[0].rating, Some(4.5));
+        assert_eq!(reviews[0].reviewer, Some("John Doe".to_string()));
+        assert_eq!(reviews[0].item, Some("Laptop".to_string()));
+    }
+
+    #[test]
+    fn test_hreview_with_rating_scale() {
+        let html = r#"
+            <div class="h-review">
+                <span class="p-summary">Excellent service</span>
+                <span class="p-rating">9</span>
+                <span class="p-best">10</span>
+                <span class="p-worst">1</span>
+                <span class="p-reviewer">Jane Smith</span>
+            </div>
+        "#;
+
+        let reviews = extract(html, None).unwrap();
+        assert_eq!(reviews.len(), 1);
+        assert_eq!(reviews[0].rating, Some(9.0));
+        assert_eq!(reviews[0].best, Some(10.0));
+        assert_eq!(reviews[0].worst, Some(1.0));
+    }
+
+    #[test]
+    fn test_hreview_with_date() {
+        let html = r#"
+            <div class="h-review">
+                <span class="p-summary">Good experience</span>
+                <time class="dt-reviewed" datetime="2024-01-15">January 15, 2024</time>
+                <span class="p-reviewer">Bob Johnson</span>
+            </div>
+        "#;
+
+        let reviews = extract(html, None).unwrap();
+        assert_eq!(reviews.len(), 1);
+        assert_eq!(reviews[0].dtreviewed, Some("2024-01-15".to_string()));
+    }
+
+    #[test]
+    fn test_hreview_with_description() {
+        let html = r#"
+            <div class="h-review">
+                <span class="p-summary">Fantastic!</span>
+                <span class="p-rating">5</span>
+                <div class="p-description">
+                    This is the best product I've ever used. Highly recommend!
+                </div>
+            </div>
+        "#;
+
+        let reviews = extract(html, None).unwrap();
+        assert_eq!(reviews.len(), 1);
+        assert!(reviews[0].description.as_ref().unwrap().contains("best product"));
+    }
+
+    #[test]
+    fn test_hreview_with_url() {
+        let html = r#"
+            <div class="h-review">
+                <a class="u-url" href="https://example.com/review/123">
+                    <span class="p-summary">Amazing</span>
+                </a>
+                <span class="p-rating">4.8</span>
+            </div>
+        "#;
+
+        let reviews = extract(html, None).unwrap();
+        assert_eq!(reviews.len(), 1);
+        assert_eq!(reviews[0].url, Some("https://example.com/review/123".to_string()));
+    }
+
+    #[test]
+    fn test_multiple_hreviews() {
+        let html = r#"
+            <div class="h-review">
+                <span class="p-summary">Review 1</span>
+                <span class="p-rating">4</span>
+            </div>
+            <div class="h-review">
+                <span class="p-summary">Review 2</span>
+                <span class="p-rating">5</span>
+            </div>
+        "#;
+
+        let reviews = extract(html, None).unwrap();
+        assert_eq!(reviews.len(), 2);
+        assert_eq!(reviews[0].summary, Some("Review 1".to_string()));
+        assert_eq!(reviews[1].summary, Some("Review 2".to_string()));
+    }
+
+    #[test]
+    fn test_hreview_empty() {
+        let html = "<html><body><p>No reviews here</p></body></html>";
+        let reviews = extract(html, None).unwrap();
+        assert_eq!(reviews.len(), 0);
+    }
+}
