@@ -1,6 +1,6 @@
 {
   "name": "@yfedoseev/meta-oxide-wasm",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "WebAssembly bindings for MetaOxide - Universal metadata extraction library",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

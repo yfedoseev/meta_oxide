@@ -9,7 +9,7 @@
 
     <!-- Package Metadata -->
     <PackageId>MetaOxide</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.2</Version>
     <Authors>Yury Fedoseev</Authors>
     <Company>MetaOxide</Company>
     <Product>MetaOxide</Product>
@@ -22,7 +22,7 @@
     <PackageTags>metadata;html;parser;opengraph;twitter;jsonld;microdata;microformats;rdfa;seo;structured-data</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageReleaseNotes>Initial release v0.1.0 - Full support for 13 metadata formats with cross-platform native binaries.</PackageReleaseNotes>
+    <PackageReleaseNotes>Release v0.1.2 - Full support for 13 metadata formats with cross-platform native binaries.</PackageReleaseNotes>
 
     <!-- Build Settings -->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

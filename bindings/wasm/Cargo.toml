@@ -1,6 +1,6 @@
 [package]
 name = "meta-oxide-wasm"
-version = "0.1.0"
+version = "0.1.2"
 authors = ["Yury Fedoseev <yfedoseev@gmail.com>"]
 edition = "2021"
 description = "WebAssembly bindings for MetaOxide metadata extraction library"

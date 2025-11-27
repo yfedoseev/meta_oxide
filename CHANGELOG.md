@@ -13,6 +13,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Validation utilities
 - Performance optimizations
 
+## [0.1.2] - 2025-11-27
+
+### Fixed
+- **CI/CD Fixes**: Fixed macOS build errors in CI workflow
+  - Changed from `--all-features` to `--no-default-features` for cross-platform compatibility
+  - Python bindings now properly separated from core Rust tests
+- **JSON-LD**: Fixed AggregateRating deserialization issues
+
+### Improved
+- **Internal Refactoring**: Phase 4 macro-driven refactoring complete
+  - Improved extractor macro system for better maintainability
+  - Enhanced nested microformat support for h-entry extractor
+  - Migrated h-event and h-card extractors to new macro system
+
+### Technical
+- Better separation of concerns in CI pipelines
+- Improved test coverage and reliability
+
 ## [0.1.1] - 2025-11-25
 
 ### Fixed

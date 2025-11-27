@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MetaOxide v0.1.0 Publishing Script
+# MetaOxide v0.1.2 Publishing Script
 # Quick reference for publishing to GitHub, crates.io, and PyPI
 #
 # Usage: ./scripts/publish.sh [step]
@@ -9,7 +9,7 @@
 set -e
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="0.1.0"
+VERSION="0.1.2"
 REPO_URL="https://github.com/yfedoseev/meta-oxide"
 
 echo "🚀 MetaOxide v${VERSION} Publishing Script"
