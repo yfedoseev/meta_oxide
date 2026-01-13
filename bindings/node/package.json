@@ -30,7 +30,7 @@
   "author": "Yury Fedoseev <yfedoseev@gmail.com>",
   "license": "MIT OR Apache-2.0",
   "devDependencies": {
-    "@napi-rs/cli": "^2.16",
+    "@napi-rs/cli": "^3.5",
     "@types/jest": "^29",
     "@types/node": "^20",
     "jest": "^29",
