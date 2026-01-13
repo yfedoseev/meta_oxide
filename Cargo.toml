@@ -31,7 +31,7 @@ thiserror = "1.0"
 pyo3 = { version = "0.22", features = ["auto-initialize"] }
 
 [build-dependencies]
-cbindgen = "0.26"
+cbindgen = "0.29"
 
 [profile.release]
 lto = true
