@@ -57,6 +57,22 @@ jobs:
       - name: Run tests
         run: cargo test --verbose --lib --no-default-features
 
+      - name: Build documentation
+        if: matrix.rust == 'stable' && matrix.os == 'ubuntu-latest'
+        env:
+          RUSTDOCFLAGS: "-D warnings"
+        run: cargo doc --no-deps --no-default-features
+
+  # Check dependencies
+  deny:
+    name: Dependency Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check dependencies
+        uses: EmbarkStudios/cargo-deny-action@v2
+
   test-python:
     name: Test Python (${{ matrix.os }}, Python ${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
