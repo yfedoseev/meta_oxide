@@ -5,20 +5,21 @@
 use crate::errors::Result;
 use crate::extractors::common::{html_utils, url_utils};
 use crate::types::meta::{AlternateLink, FeedLink, MetaTags, RobotsDirective};
+use scraper::Html;
 
 #[cfg(test)]
 mod tests;
 
-/// Extract all standard meta tags from HTML
+/// Extract all standard meta tags from an HTML string.
 ///
-/// # Arguments
-/// * `html` - The HTML content
-/// * `base_url` - Optional base URL for resolving relative URLs
-///
-/// # Returns
-/// * `Result<MetaTags>` - Extracted meta tags or error
+/// Parses the HTML once and delegates to [`extract_from_dom`]. Prefer
+/// [`extract_from_dom`] directly when you already have a parsed `Html`.
 pub fn extract(html: &str, base_url: Option<&str>) -> Result<MetaTags> {
-    let document = html_utils::parse_html(html);
+    extract_from_dom(&html_utils::parse_html(html), base_url)
+}
+
+/// Extract all standard meta tags from an already-parsed DOM.
+pub fn extract_from_dom(document: &Html, base_url: Option<&str>) -> Result<MetaTags> {
     let mut meta = MetaTags::default();
 
     // Extract title

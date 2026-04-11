@@ -74,6 +74,21 @@
 #include <stdlib.h>
 
 /**
+ * Default cap on organic results when callers don't specify one. Google's
+ * default first page is 10 results.
+ */
+#define DEFAULT_MAX_ORGANIC 10
+
+/**
+ * Bitmask selecting which extractors [`MetaParser`] should run.
+ *
+ * Defaults to [`FormatMask::ALL`]. Use [`MetaParser::with_formats`] to opt out
+ * of formats you don't need (e.g. skip microformats on a SERP page where
+ * you only want the meta tags).
+ */
+typedef struct FormatMask FormatMask;
+
+/**
  * Result structure containing all extracted metadata
  *
  * Each field is a JSON string or NULL if no data was found.
@@ -139,6 +154,32 @@ typedef struct ManifestDiscovery {
    */
   char *manifest;
 } ManifestDiscovery;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Extract ALL metadata from HTML

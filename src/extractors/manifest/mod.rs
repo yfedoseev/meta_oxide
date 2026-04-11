@@ -6,6 +6,7 @@
 use crate::errors::{MicroformatError, Result};
 use crate::extractors::common::{html_utils, url_utils};
 use crate::types::manifest::{ManifestDiscovery, WebAppManifest};
+use scraper::Html;
 
 #[cfg(test)]
 mod tests;
@@ -30,8 +31,11 @@ mod tests;
 /// assert_eq!(discovery.href, Some("https://example.com/manifest.json".to_string()));
 /// ```
 pub fn extract_link(html: &str, base_url: Option<&str>) -> Result<ManifestDiscovery> {
-    let doc = html_utils::parse_html(html);
+    extract_link_from_dom(&html_utils::parse_html(html), base_url)
+}
 
+/// Extract manifest link from an already-parsed DOM.
+pub fn extract_link_from_dom(doc: &Html, base_url: Option<&str>) -> Result<ManifestDiscovery> {
     // Find <link rel="manifest" href="...">
     let selector = html_utils::create_selector("link[rel=manifest][href]")?;
 
@@ -144,6 +148,11 @@ pub fn parse_manifest(json: &str, base_url: Option<&str>) -> Result<WebAppManife
 /// * `Result<ManifestDiscovery>` - Discovery result with href
 pub fn extract(html: &str, base_url: Option<&str>) -> Result<ManifestDiscovery> {
     extract_link(html, base_url)
+}
+
+/// Extract manifest discovery from an already-parsed DOM.
+pub fn extract_from_dom(doc: &Html, base_url: Option<&str>) -> Result<ManifestDiscovery> {
+    extract_link_from_dom(doc, base_url)
 }
 
 #[cfg(test)]

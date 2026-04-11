@@ -6,17 +6,17 @@
 use crate::errors::Result;
 use crate::extractors::common::{html_utils, url_utils};
 use crate::types::social::{OgArticle, OgAudio, OgBook, OgImage, OgProfile, OgVideo, OpenGraph};
+use scraper::Html;
 
-/// Extract Open Graph metadata from HTML
+/// Extract Open Graph metadata from an HTML string.
 ///
-/// # Arguments
-/// * `html` - HTML content to parse
-/// * `base_url` - Optional base URL for resolving relative URLs
-///
-/// # Returns
-/// * `Result<OpenGraph>` - Extracted Open Graph data
+/// Parses the HTML once and delegates to [`extract_from_dom`].
 pub fn extract(html: &str, base_url: Option<&str>) -> Result<OpenGraph> {
-    let document = html_utils::parse_html(html);
+    extract_from_dom(&html_utils::parse_html(html), base_url)
+}
+
+/// Extract Open Graph metadata from an already-parsed DOM.
+pub fn extract_from_dom(document: &Html, base_url: Option<&str>) -> Result<OpenGraph> {
     let mut og = OpenGraph::default();
 
     // Track current image/video/audio for structured properties

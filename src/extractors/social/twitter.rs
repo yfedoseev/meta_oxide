@@ -6,17 +6,17 @@
 use crate::errors::Result;
 use crate::extractors::common::{html_utils, url_utils};
 use crate::types::social::{TwitterApp, TwitterCard, TwitterPlayer};
+use scraper::Html;
 
-/// Extract Twitter Card metadata from HTML
+/// Extract Twitter Card metadata from an HTML string.
 ///
-/// # Arguments
-/// * `html` - HTML content to parse
-/// * `base_url` - Optional base URL for resolving relative URLs
-///
-/// # Returns
-/// * `Result<TwitterCard>` - Extracted Twitter Card data
+/// Parses the HTML once and delegates to [`extract_from_dom`].
 pub fn extract(html: &str, base_url: Option<&str>) -> Result<TwitterCard> {
-    let document = html_utils::parse_html(html);
+    extract_from_dom(&html_utils::parse_html(html), base_url)
+}
+
+/// Extract Twitter Card metadata from an already-parsed DOM.
+pub fn extract_from_dom(document: &Html, base_url: Option<&str>) -> Result<TwitterCard> {
     let mut card = TwitterCard::default();
 
     // Track player/app metadata
@@ -153,11 +153,19 @@ pub fn extract(html: &str, base_url: Option<&str>) -> Result<TwitterCard> {
 /// # Returns
 /// * `Result<TwitterCard>` - Extracted Twitter Card data with OG fallback
 pub fn extract_with_fallback(html: &str, base_url: Option<&str>) -> Result<TwitterCard> {
-    let mut card = extract(html, base_url)?;
+    extract_with_fallback_from_dom(&html_utils::parse_html(html), base_url)
+}
+
+/// Twitter Card with Open Graph fallback, operating on an already-parsed DOM.
+pub fn extract_with_fallback_from_dom(
+    document: &Html,
+    base_url: Option<&str>,
+) -> Result<TwitterCard> {
+    let mut card = extract_from_dom(document, base_url)?;
 
     // If critical Twitter fields are missing, try Open Graph
     if card.title.is_none() || card.description.is_none() || card.image.is_none() {
-        let og = super::opengraph::extract(html, base_url)?;
+        let og = super::opengraph::extract_from_dom(document, base_url)?;
 
         if card.title.is_none() {
             card.title = og.title;

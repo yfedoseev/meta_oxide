@@ -8,15 +8,24 @@ use pyo3::types::{PyDict, PyList};
 #[cfg(feature = "python")]
 use std::collections::HashMap;
 
+pub mod canonical;
 mod errors;
-mod extractors;
+pub mod extractors;
 pub mod ffi;
+pub mod heuristics;
 #[macro_use]
 mod macros;
-mod parser;
-mod types;
+pub mod parser;
+pub mod parser_facade;
+pub mod provenance;
+pub mod serp;
+pub mod types;
+pub mod wikidata;
+pub mod wikipedia;
 
 pub use errors::{MicroformatError, Result};
+pub use parser_facade::{FormatMask, MetaGraph, MetaParser};
+pub use provenance::{FieldSource, FieldValue};
 pub use types::*;
 
 // Re-export utilities needed by macros (required for macro expansion, not Python-specific)

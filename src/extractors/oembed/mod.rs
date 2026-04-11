@@ -6,20 +6,20 @@
 use crate::errors::Result;
 use crate::extractors::common::{html_utils, url_utils};
 use crate::types::oembed::{OEmbedDiscovery, OEmbedEndpoint, OEmbedFormat};
+use scraper::Html;
 
 #[cfg(test)]
 mod tests;
 
-/// Discover oEmbed endpoints from HTML
+/// Discover oEmbed endpoints from an HTML string.
 ///
-/// # Arguments
-/// * `html` - The HTML content
-/// * `base_url` - Optional base URL for resolving relative URLs
-///
-/// # Returns
-/// * `Result<OEmbedDiscovery>` - Discovered oEmbed endpoints or error
+/// Parses the HTML once and delegates to [`extract_from_dom`].
 pub fn extract(html: &str, base_url: Option<&str>) -> Result<OEmbedDiscovery> {
-    let document = html_utils::parse_html(html);
+    extract_from_dom(&html_utils::parse_html(html), base_url)
+}
+
+/// Discover oEmbed endpoints from an already-parsed DOM.
+pub fn extract_from_dom(document: &Html, base_url: Option<&str>) -> Result<OEmbedDiscovery> {
     let mut discovery = OEmbedDiscovery::default();
 
     // Look for link tags with rel="alternate" and type containing "oembed"

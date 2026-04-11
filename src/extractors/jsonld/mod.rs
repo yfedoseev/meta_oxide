@@ -6,23 +6,22 @@
 use crate::errors::Result;
 use crate::extractors::common::html_utils;
 use crate::types::jsonld::JsonLdObject;
-use scraper::Selector;
+use scraper::{Html, Selector};
 
 #[cfg(test)]
 mod tests;
 
-/// Extract all JSON-LD objects from HTML
+/// Extract all JSON-LD objects from an HTML string.
 ///
-/// Finds all <script type="application/ld+json"> tags and parses their JSON content.
+/// Parses the HTML once and delegates to [`extract_from_dom`].
+pub fn extract(html: &str, base_url: Option<&str>) -> Result<Vec<JsonLdObject>> {
+    extract_from_dom(&html_utils::parse_html(html), base_url)
+}
+
+/// Extract all JSON-LD objects from an already-parsed DOM.
 ///
-/// # Arguments
-/// * `html` - The HTML content
-/// * `_base_url` - Optional base URL (not used for JSON-LD)
-///
-/// # Returns
-/// * `Result<Vec<JsonLdObject>>` - All JSON-LD objects found
-pub fn extract(html: &str, _base_url: Option<&str>) -> Result<Vec<JsonLdObject>> {
-    let document = html_utils::parse_html(html);
+/// Finds all `<script type="application/ld+json">` tags and parses their JSON content.
+pub fn extract_from_dom(document: &Html, _base_url: Option<&str>) -> Result<Vec<JsonLdObject>> {
     let mut objects = Vec::new();
 
     // Find all <script type="application/ld+json"> tags

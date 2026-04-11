@@ -61,11 +61,23 @@ macro_rules! microformat_extractor {
             ),* $(,)?
         }
     ) => {
+        /// Extract from an HTML string. Parses once and delegates to
+        /// [`extract_from_dom`].
+        pub fn extract(
+            html: &str,
+            base_url: Option<&str>,
+        ) -> $crate::Result<Vec<$type_name>> {
+            extract_from_dom(&$crate::html_utils::parse_html(html), base_url)
+        }
+
+        /// Extract from an already-parsed DOM.
         #[allow(unused_variables)]
-        pub fn extract(html: &str, base_url: Option<&str>) -> $crate::Result<Vec<$type_name>> {
+        pub fn extract_from_dom(
+            document: &::scraper::Html,
+            base_url: Option<&str>,
+        ) -> $crate::Result<Vec<$type_name>> {
             use $crate::html_utils;
 
-            let document = html_utils::parse_html(html);
             let mut items = Vec::new();
 
             let root_selector = html_utils::create_selector($root_selector)?;
@@ -103,11 +115,23 @@ macro_rules! microformat_extractor {
             ),* $(,)?
         }
     ) => {
+        /// Extract from an HTML string. Parses once and delegates to
+        /// [`extract_from_dom`].
+        pub fn extract(
+            html: &str,
+            base_url: Option<&str>,
+        ) -> $crate::Result<Vec<$type_name>> {
+            extract_from_dom(&$crate::html_utils::parse_html(html), base_url)
+        }
+
+        /// Extract from an already-parsed DOM.
         #[allow(unused_variables)]
-        pub fn extract(html: &str, base_url: Option<&str>) -> $crate::Result<Vec<$type_name>> {
+        pub fn extract_from_dom(
+            document: &::scraper::Html,
+            base_url: Option<&str>,
+        ) -> $crate::Result<Vec<$type_name>> {
             use $crate::html_utils;
 
-            let document = html_utils::parse_html(html);
             let mut items = Vec::new();
 
             let root_selector = html_utils::create_selector($root_selector)?;

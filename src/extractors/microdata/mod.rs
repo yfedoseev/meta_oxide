@@ -6,23 +6,22 @@
 use crate::errors::Result;
 use crate::extractors::common::{html_utils, url_utils};
 use crate::types::microdata::MicrodataItem;
-use scraper::{ElementRef, Selector};
+use scraper::{ElementRef, Html, Selector};
 
 #[cfg(test)]
 mod tests;
 
-/// Extract all microdata items from HTML
+/// Extract all microdata items from an HTML string.
+///
+/// Parses the HTML once and delegates to [`extract_from_dom`].
+pub fn extract(html: &str, base_url: Option<&str>) -> Result<Vec<MicrodataItem>> {
+    extract_from_dom(&html_utils::parse_html(html), base_url)
+}
+
+/// Extract all microdata items from an already-parsed DOM.
 ///
 /// Finds all elements with `itemscope` attribute and extracts their properties.
-///
-/// # Arguments
-/// * `html` - The HTML content
-/// * `base_url` - Optional base URL for resolving relative URLs
-///
-/// # Returns
-/// * `Result<Vec<MicrodataItem>>` - All microdata items found
-pub fn extract(html: &str, base_url: Option<&str>) -> Result<Vec<MicrodataItem>> {
-    let document = html_utils::parse_html(html);
+pub fn extract_from_dom(document: &Html, base_url: Option<&str>) -> Result<Vec<MicrodataItem>> {
     let mut items = Vec::new();
 
     // Find all top-level itemscope elements (not nested)

@@ -100,7 +100,11 @@ impl PrefixContext {
 /// assert_eq!(items.len(), 1);
 /// ```
 pub fn extract(html: &str, base_url: Option<&str>) -> Result<Vec<RdfaItem>> {
-    let doc = html_utils::parse_html(html);
+    extract_from_dom(&html_utils::parse_html(html), base_url)
+}
+
+/// Extract RDFa metadata from an already-parsed DOM.
+pub fn extract_from_dom(doc: &Html, base_url: Option<&str>) -> Result<Vec<RdfaItem>> {
     let mut items = Vec::new();
 
     // Create prefix context with default prefixes

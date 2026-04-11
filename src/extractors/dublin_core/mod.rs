@@ -5,19 +5,20 @@
 use crate::errors::Result;
 use crate::extractors::common::html_utils;
 use crate::types::dublin_core::DublinCore;
+use scraper::Html;
 
 #[cfg(test)]
 mod tests;
 
-/// Extract Dublin Core metadata from HTML
+/// Extract Dublin Core metadata from an HTML string.
 ///
-/// # Arguments
-/// * `html` - The HTML content
-///
-/// # Returns
-/// * `Result<DublinCore>` - Extracted Dublin Core metadata or error
+/// Parses the HTML once and delegates to [`extract_from_dom`].
 pub fn extract(html: &str) -> Result<DublinCore> {
-    let document = html_utils::parse_html(html);
+    extract_from_dom(&html_utils::parse_html(html))
+}
+
+/// Extract Dublin Core metadata from an already-parsed DOM.
+pub fn extract_from_dom(document: &Html) -> Result<DublinCore> {
     let mut dc = DublinCore::default();
 
     // Extract Dublin Core meta tags (both DC. and dc. prefixes)

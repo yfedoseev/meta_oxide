@@ -1,26 +1,31 @@
 //! Common types and utilities for all extractors
 
 use crate::errors::Result;
+use scraper::Html;
 use std::fmt::Debug;
 
 /// Base trait for all HTML extractors
 ///
-/// This trait defines the common interface that all extractors (microformats,
-/// Open Graph, JSON-LD, etc.) must implement.
-#[allow(dead_code)]
+/// Implementors only need to provide [`Extractor::extract_from_dom`]. A default
+/// [`Extractor::extract`] parses the HTML string once and delegates, which lets
+/// callers who already have a parsed DOM skip re-parsing when running several
+/// extractors against the same document.
 pub trait Extractor: Debug {
     /// The output type this extractor produces
     type Output: Debug;
 
-    /// Extract data from HTML
+    /// Extract data from an already-parsed DOM.
     ///
-    /// # Arguments
-    /// * `html` - The HTML content to extract from
-    /// * `base_url` - Optional base URL for resolving relative URLs
+    /// Prefer this entry point when running multiple extractors over the same
+    /// document — it avoids re-parsing the HTML for each one.
+    fn extract_from_dom(dom: &Html, base_url: Option<&str>) -> Result<Self::Output>;
+
+    /// Extract data from an HTML string.
     ///
-    /// # Returns
-    /// * `Result<Self::Output>` - Extracted data or error
-    fn extract(html: &str, base_url: Option<&str>) -> Result<Self::Output>;
+    /// Parses the HTML once and delegates to [`Extractor::extract_from_dom`].
+    fn extract(html: &str, base_url: Option<&str>) -> Result<Self::Output> {
+        Self::extract_from_dom(&html_utils::parse_html(html), base_url)
+    }
 }
 
 /// Utility functions for URL resolution

@@ -18,20 +18,21 @@
 
 use crate::errors::Result;
 use crate::extractors::common::{html_utils, url_utils};
+use scraper::Html;
 use std::collections::HashMap;
 
-/// Extract rel-* link relationships from HTML
+/// Extract rel-* link relationships from an HTML string.
 ///
-/// Returns a HashMap mapping rel type to array of URLs
-///
-/// # Arguments
-/// * `html` - HTML content to extract from
-/// * `base_url` - Optional base URL for resolving relative URLs
-///
-/// # Returns
-/// * `Result<HashMap<String, Vec<String>>>` - Map of rel type to URLs
+/// Parses the HTML once and delegates to [`extract_from_dom`].
 pub fn extract(html: &str, base_url: Option<&str>) -> Result<HashMap<String, Vec<String>>> {
-    let document = html_utils::parse_html(html);
+    extract_from_dom(&html_utils::parse_html(html), base_url)
+}
+
+/// Extract rel-* link relationships from an already-parsed DOM.
+pub fn extract_from_dom(
+    document: &Html,
+    base_url: Option<&str>,
+) -> Result<HashMap<String, Vec<String>>> {
     let mut rel_links: HashMap<String, Vec<String>> = HashMap::new();
 
     // Find all elements with rel and href attributes (link and a tags)
