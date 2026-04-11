@@ -115,7 +115,7 @@ console.log('Title:', metadata.title);
 <dependency>
     <groupId>com.metaoxide</groupId>
     <artifactId>meta-oxide</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.3</version>
 </dependency>
 ```
 

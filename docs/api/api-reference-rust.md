@@ -496,7 +496,7 @@ Enable specific features in `Cargo.toml`:
 
 ```toml
 [dependencies]
-meta_oxide = { version = "0.1.0", features = ["python"] }
+meta_oxide = { version = "0.1.3", features = ["python"] }
 ```
 
 Available features:

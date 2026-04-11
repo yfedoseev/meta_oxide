@@ -6,7 +6,7 @@
  *
  * Deployment:
  *   1. Create api/extract.ts in your Vercel project with this content
- *   2. Add to package.json: "@yfedoseev/meta-oxide-wasm": "^0.1.0"
+ *   2. Add to package.json: "@yfedoseev/meta-oxide-wasm": "^0.1.3"
  *   3. Deploy: vercel --prod
  *
  * File structure:

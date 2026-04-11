@@ -113,7 +113,7 @@ export { config } from '../bindings/wasm/examples/vercel-edge';
 ```json
 {
   "dependencies": {
-    "@yfedoseev/meta-oxide-wasm": "^0.1.0"
+    "@yfedoseev/meta-oxide-wasm": "^0.1.3"
   }
 }
 ```

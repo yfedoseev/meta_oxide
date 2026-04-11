@@ -16,7 +16,7 @@ Add MetaOxide to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-meta_oxide = "0.1.0"
+meta_oxide = "0.1.3"
 ```
 
 Or use cargo add:

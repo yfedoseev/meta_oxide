@@ -120,7 +120,7 @@ System.out.println(response.getBody());
 ```java
 @Service
 public class MetadataExtractionService {
-    
+
     public Map<String, Object> extractMetadata(String html, String baseUrl) {
         Extractor extractor = new Extractor(html, baseUrl);
         return extractor.extractAll();
@@ -159,7 +159,7 @@ public class MetadataController {
     @PostMapping("/extract")
     public ResponseEntity<Map<String, Object>> extractAll(
             @RequestBody ExtractionRequest request) {
-        
+
         Map<String, Object> result = service.extractMetadata(
             request.getHtml(),
             request.getBaseUrl()
@@ -284,7 +284,7 @@ public class MetadataControllerTest {
     @Test
     public void testExtractAll() throws Exception {
         String html = "<html><head><title>Test</title></head></html>";
-        
+
         mockMvc.perform(post("/api/extract")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"html\": \"" + html + "\"}"))
@@ -300,7 +300,7 @@ Use MetaOxide in Android applications:
 
 ```gradle
 dependencies {
-    implementation 'io.github.yfedoseev:meta-oxide:0.1.0'
+    implementation 'io.github.yfedoseev:meta-oxide:0.1.3'
 }
 ```
 

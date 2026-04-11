@@ -20,7 +20,7 @@ Add to your `pom.xml`:
 <dependency>
     <groupId>com.metaoxide</groupId>
     <artifactId>meta-oxide</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.3</version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@ Add to your `build.gradle`:
 
 ```gradle
 dependencies {
-    implementation 'com.metaoxide:meta-oxide:0.1.0'
+    implementation 'com.metaoxide:meta-oxide:0.1.3'
 }
 ```
 
@@ -236,7 +236,7 @@ In your `build.gradle` (app level):
 
 ```gradle
 dependencies {
-    implementation 'com.metaoxide:meta-oxide:0.1.0'
+    implementation 'com.metaoxide:meta-oxide:0.1.3'
 }
 ```
 

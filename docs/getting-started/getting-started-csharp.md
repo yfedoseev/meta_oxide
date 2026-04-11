@@ -30,7 +30,7 @@ Add to your `.csproj` file:
 
 ```xml
 <ItemGroup>
-    <PackageReference Include="MetaOxide" Version="0.1.0" />
+    <PackageReference Include="MetaOxide" Version="0.1.3" />
 </ItemGroup>
 ```
 

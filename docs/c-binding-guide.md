@@ -639,7 +639,7 @@ export function extractAll(html: string, baseUrl?: string): MetaOxideResult;
 Verify compatible C library version at runtime:
 
 ```python
-MIN_VERSION = "0.1.0"
+MIN_VERSION = "0.1.3"
 lib_version = lib.meta_oxide_version().decode('utf-8')
 if lib_version < MIN_VERSION:
     raise RuntimeError(f"Incompatible library version: {lib_version}")

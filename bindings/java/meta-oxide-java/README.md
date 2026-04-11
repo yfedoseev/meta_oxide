@@ -47,7 +47,7 @@ Add to your `pom.xml`:
 <dependency>
     <groupId>io.github.yfedoseev</groupId>
     <artifactId>meta-oxide</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.3</version>
 </dependency>
 ```
 
@@ -57,7 +57,7 @@ Add to your `build.gradle`:
 
 ```groovy
 dependencies {
-    implementation 'io.github.yfedoseev:meta-oxide:0.1.0'
+    implementation 'io.github.yfedoseev:meta-oxide:0.1.3'
 }
 ```
 
@@ -67,7 +67,7 @@ Add to your `build.gradle` (app module):
 
 ```groovy
 dependencies {
-    implementation 'io.github.yfedoseev:meta-oxide:0.1.0'
+    implementation 'io.github.yfedoseev:meta-oxide:0.1.3'
 }
 ```
 
@@ -552,7 +552,7 @@ android {
 }
 
 dependencies {
-    implementation 'io.github.yfedoseev:meta-oxide:0.1.0'
+    implementation 'io.github.yfedoseev:meta-oxide:0.1.3'
 }
 ```
 

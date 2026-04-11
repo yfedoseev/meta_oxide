@@ -20,7 +20,7 @@ Complete API documentation for the Java library.
 <dependency>
     <groupId>com.metaoxide</groupId>
     <artifactId>meta-oxide</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.3</version>
 </dependency>
 ```
 
@@ -28,7 +28,7 @@ Complete API documentation for the Java library.
 
 ```gradle
 dependencies {
-    implementation 'com.metaoxide:meta-oxide:0.1.0'
+    implementation 'com.metaoxide:meta-oxide:0.1.3'
 }
 ```
 
