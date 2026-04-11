@@ -1,0 +1,76 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "headline": {
+    "value": "Breaking: Example Occurs",
+    "source": {
+      "format": "json_ld",
+      "path": "Article.headline"
+    }
+  },
+  "description": {
+    "value": "A thorough examination of an example scenario.",
+    "source": {
+      "format": "json_ld",
+      "path": "Article.description"
+    }
+  },
+  "author": {
+    "value": "Jane Reporter",
+    "source": {
+      "format": "json_ld",
+      "path": "Article.author"
+    }
+  },
+  "publisher": {
+    "value": "The Daily Example",
+    "source": {
+      "format": "json_ld",
+      "path": "Article.publisher"
+    }
+  },
+  "image": {
+    "value": "https://example.com/hero.jpg",
+    "source": {
+      "format": "open_graph",
+      "path": "og:image"
+    }
+  },
+  "date_published": {
+    "value": "2026-04-10T08:30:00Z",
+    "source": {
+      "format": "json_ld",
+      "path": "Article.datePublished"
+    }
+  },
+  "date_modified": {
+    "value": "2026-04-10T09:00:00Z",
+    "source": {
+      "format": "json_ld",
+      "path": "Article.dateModified"
+    }
+  },
+  "url": {
+    "value": "https://example.com/story",
+    "source": {
+      "format": "json_ld",
+      "path": "Article.url"
+    }
+  },
+  "section": {
+    "value": "Technology",
+    "source": {
+      "format": "json_ld",
+      "path": "Article.articleSection"
+    }
+  },
+  "word_count": {
+    "value": 1500,
+    "source": {
+      "format": "json_ld",
+      "path": "Article.wordCount"
+    }
+  },
+  "body": null
+}

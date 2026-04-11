@@ -1,0 +1,18 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "name": "Test Subject",
+  "entity_type": "Person",
+  "description": null,
+  "image_url": "https://upload.wikimedia.org/portrait.jpg",
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Test_Subject",
+  "wikidata_id": null,
+  "attributes": {
+    "Born": "1 January 1900",
+    "Died": "31 December 1999",
+    "Known for": "Being a test fixture",
+    "Nationality": "Example"
+  },
+  "related_entities": []
+}

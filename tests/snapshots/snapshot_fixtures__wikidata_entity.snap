@@ -1,0 +1,13 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "name": "Example Entity",
+  "entity_type": "Q5",
+  "description": "A fictional test entity.",
+  "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Example_image.jpg",
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Example_Entity",
+  "wikidata_id": "Q42",
+  "attributes": {},
+  "related_entities": []
+}

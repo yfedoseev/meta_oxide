@@ -29,6 +29,8 @@ thiserror = "1.0"
 
 [dev-dependencies]
 pyo3 = { version = "0.22", features = ["auto-initialize"] }
+insta = { version = "1.40", features = ["yaml", "json"] }
+proptest = "1.5"
 
 [build-dependencies]
 cbindgen = "0.26"

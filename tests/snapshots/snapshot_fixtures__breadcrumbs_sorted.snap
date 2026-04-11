@@ -1,0 +1,26 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "items": [
+    {
+      "position": 1,
+      "name": "Home",
+      "url": "https://example.com/"
+    },
+    {
+      "position": 2,
+      "name": "Electronics",
+      "url": "https://example.com/electronics"
+    },
+    {
+      "position": 3,
+      "name": "Keyboards",
+      "url": "https://example.com/electronics/keyboards"
+    }
+  ],
+  "source": {
+    "format": "json_ld",
+    "path": "BreadcrumbList"
+  }
+}

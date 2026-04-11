@@ -1,0 +1,71 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "name": {
+    "value": "Mechanical Keyboard",
+    "source": {
+      "format": "json_ld",
+      "path": "Product.name"
+    }
+  },
+  "description": {
+    "value": "RGB mechanical keyboard with Cherry MX Red switches.",
+    "source": {
+      "format": "json_ld",
+      "path": "Product.description"
+    }
+  },
+  "image": {
+    "value": "https://acme.example.com/kb-001.jpg",
+    "source": {
+      "format": "json_ld",
+      "path": "Product.image"
+    }
+  },
+  "brand": {
+    "value": "Acme",
+    "source": {
+      "format": "json_ld",
+      "path": "Product.brand"
+    }
+  },
+  "sku": {
+    "value": "KB-001",
+    "source": {
+      "format": "json_ld",
+      "path": "Product.sku"
+    }
+  },
+  "gtin": {
+    "value": "0123456789012",
+    "source": {
+      "format": "json_ld",
+      "path": "Product.gtin"
+    }
+  },
+  "url": {
+    "value": "https://acme.example.com/kb-001",
+    "source": {
+      "format": "json_ld",
+      "path": "Product.url"
+    }
+  },
+  "price": {
+    "value": {
+      "amount": 129.99,
+      "currency": "USD"
+    },
+    "source": {
+      "format": "json_ld",
+      "path": "Product.offers.price"
+    }
+  },
+  "availability": {
+    "value": "in_stock",
+    "source": {
+      "format": "json_ld",
+      "path": "Product.offers.availability"
+    }
+  }
+}

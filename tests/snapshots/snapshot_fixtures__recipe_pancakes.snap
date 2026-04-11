@@ -1,0 +1,66 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "name": {
+    "value": "Simple Pancakes",
+    "source": {
+      "format": "json_ld",
+      "path": "Recipe.name"
+    }
+  },
+  "description": {
+    "value": "Fluffy breakfast pancakes in 15 minutes.",
+    "source": {
+      "format": "json_ld",
+      "path": "Recipe.description"
+    }
+  },
+  "author": {
+    "value": "Chef Bob",
+    "source": {
+      "format": "json_ld",
+      "path": "Recipe.author"
+    }
+  },
+  "prep_time": {
+    "value": "PT5M",
+    "source": {
+      "format": "json_ld",
+      "path": "Recipe.prepTime"
+    }
+  },
+  "cook_time": {
+    "value": "PT10M",
+    "source": {
+      "format": "json_ld",
+      "path": "Recipe.cookTime"
+    }
+  },
+  "total_time": {
+    "value": "PT15M",
+    "source": {
+      "format": "json_ld",
+      "path": "Recipe.totalTime"
+    }
+  },
+  "recipe_yield": {
+    "value": "4 servings",
+    "source": {
+      "format": "json_ld",
+      "path": "Recipe.recipeYield"
+    }
+  },
+  "ingredients": [
+    "1 cup flour",
+    "1 cup milk",
+    "1 egg",
+    "pinch of salt"
+  ],
+  "instructions": [
+    "Mix dry ingredients.",
+    "Add wet ingredients and whisk.",
+    "Cook on hot skillet."
+  ],
+  "image": null
+}

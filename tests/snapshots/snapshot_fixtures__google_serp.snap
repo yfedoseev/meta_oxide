@@ -1,0 +1,45 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "featured_snippet": {
+    "text": "Asynchronous programming in Rust is a first-class language feature supporting non-blocking concurrent execution through the futures abstraction. Async Book",
+    "title": "Async Book",
+    "url": "https://rust-lang.github.io/async-book/",
+    "snippet_type": null
+  },
+  "knowledge_graph": null,
+  "people_also_ask": [
+    {
+      "question": "What is async in Rust?",
+      "answer": "A language feature for writing futures-based concurrent code. async-book",
+      "source_url": "https://rust-lang.github.io/async-book/",
+      "source_title": null
+    }
+  ],
+  "related_searches": [],
+  "site_links": [],
+  "organic": [
+    {
+      "position": 1,
+      "title": "Async Book",
+      "url": "https://rust-lang.github.io/async-book/",
+      "snippet": "Asynchronous programming in Rust is a first-class language feature supporting non-blocking concurrent execution through the futures abstraction. Async Book",
+      "date": null
+    },
+    {
+      "position": 2,
+      "title": "Rust Book — Concurrency",
+      "url": "https://doc.rust-lang.org/book/ch16-00-concurrency.html",
+      "snippet": "Asynchronous programming in Rust is a first-class language feature supporting non-blocking concurrent execution through the futures abstraction. Async Book Rust Book — Concurrency Concurrency support is one of Rust's headline features in the standard library. Tokio Tutorial Tokio is an asynchronous runtime for the Rust programming language. What is async in Rust? A language feature for writing futures-based concurrent code. async-book",
+      "date": null
+    },
+    {
+      "position": 3,
+      "title": "Tokio Tutorial",
+      "url": "https://tokio.rs/tokio/tutorial",
+      "snippet": "Asynchronous programming in Rust is a first-class language feature supporting non-blocking concurrent execution through the futures abstraction. Async Book Rust Book — Concurrency Concurrency support is one of Rust's headline features in the standard library. Tokio Tutorial Tokio is an asynchronous runtime for the Rust programming language. What is async in Rust? A language feature for writing futures-based concurrent code. async-book",
+      "date": null
+    }
+  ]
+}

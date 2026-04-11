@@ -73,6 +73,29 @@ jobs:
       - name: Check dependencies
         uses: EmbarkStudios/cargo-deny-action@v2
 
+  # Detect accidental SemVer-breaking changes to the public API by comparing
+  # against the latest crates.io release. The `meta_oxide` 0.1.x line promised
+  # downstream consumers (scraper_oxide, reader_oxide) that additions would
+  # not break existing signatures — this job enforces that promise.
+  #
+  # Runs on push/PR to feature branches; the default baseline is the highest
+  # published version on crates.io, so new additions are reported as
+  # "minor change" (allowed) and removals/renames as "major change" (fail).
+  semver-checks:
+    name: SemVer Compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Check SemVer
+        uses: obi1kenobi/cargo-semver-checks-action@v2
+        with:
+          feature-group: default-features
+          package: meta_oxide
+
   test-python:
     name: Test Python (${{ matrix.os }}, Python ${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}

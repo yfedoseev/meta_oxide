@@ -1,0 +1,19 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "questions": [
+    {
+      "question": "What is meta_oxide?",
+      "answer": "A universal HTML metadata extraction library."
+    },
+    {
+      "question": "Which formats does it support?",
+      "answer": "Thirteen, including JSON-LD, Open Graph, microdata, and RDFa."
+    }
+  ],
+  "source": {
+    "format": "json_ld",
+    "path": "FAQPage"
+  }
+}

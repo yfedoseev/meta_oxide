@@ -1,0 +1,40 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "body": {
+    "value": "The article body here is long enough to be considered a real body element for heuristic purposes.",
+    "source": {
+      "format": "heuristic",
+      "path": "article_tag"
+    }
+  },
+  "description": {
+    "value": "A sufficiently long first paragraph that clears the twenty-character heuristic threshold.",
+    "source": {
+      "format": "heuristic",
+      "path": "first_paragraph"
+    }
+  },
+  "image": {
+    "value": "/hero.jpg",
+    "source": {
+      "format": "heuristic",
+      "path": "first_img"
+    }
+  },
+  "published_time": {
+    "value": "2026-04-10",
+    "source": {
+      "format": "heuristic",
+      "path": "first_time_datetime"
+    }
+  },
+  "title": {
+    "value": "Unstructured Heading",
+    "source": {
+      "format": "heuristic",
+      "path": "first_h1"
+    }
+  }
+}

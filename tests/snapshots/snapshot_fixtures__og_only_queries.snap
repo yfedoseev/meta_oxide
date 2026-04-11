@@ -1,0 +1,40 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "description": {
+    "source": {
+      "format": "open_graph",
+      "path": "og:description"
+    },
+    "value": "Description from OG alone."
+  },
+  "image": {
+    "source": {
+      "format": "open_graph",
+      "path": "og:image"
+    },
+    "value": "https://example.com/og.jpg"
+  },
+  "site_name": {
+    "source": {
+      "format": "open_graph",
+      "path": "og:site_name"
+    },
+    "value": "OG Example"
+  },
+  "title": {
+    "source": {
+      "format": "open_graph",
+      "path": "og:title"
+    },
+    "value": "OG Only Page"
+  },
+  "url": {
+    "source": {
+      "format": "open_graph",
+      "path": "og:url"
+    },
+    "value": "https://example.com/og-only"
+  }
+}

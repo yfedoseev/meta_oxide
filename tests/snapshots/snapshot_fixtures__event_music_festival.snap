@@ -1,0 +1,54 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "name": {
+    "value": "Example Festival 2026",
+    "source": {
+      "format": "json_ld",
+      "path": "Event.name"
+    }
+  },
+  "description": {
+    "value": "Annual music festival.",
+    "source": {
+      "format": "json_ld",
+      "path": "Event.description"
+    }
+  },
+  "start_date": {
+    "value": "2026-07-15T18:00:00Z",
+    "source": {
+      "format": "json_ld",
+      "path": "Event.startDate"
+    }
+  },
+  "end_date": {
+    "value": "2026-07-15T23:00:00Z",
+    "source": {
+      "format": "json_ld",
+      "path": "Event.endDate"
+    }
+  },
+  "location": {
+    "value": "Central Park, New York",
+    "source": {
+      "format": "json_ld",
+      "path": "Event.location"
+    }
+  },
+  "url": {
+    "value": "https://example.com/festival-2026",
+    "source": {
+      "format": "json_ld",
+      "path": "Event.url"
+    }
+  },
+  "image": {
+    "value": "https://example.com/festival.jpg",
+    "source": {
+      "format": "json_ld",
+      "path": "Event.image"
+    }
+  }
+}

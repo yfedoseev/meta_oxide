@@ -1,0 +1,47 @@
+---
+source: tests/snapshot_fixtures.rs
+---
+{
+  "name": {
+    "value": "Mouse Pad",
+    "source": {
+      "format": "microdata",
+      "path": "Product.name"
+    }
+  },
+  "description": {
+    "value": "Large gaming mouse pad.",
+    "source": {
+      "format": "microdata",
+      "path": "Product.description"
+    }
+  },
+  "image": null,
+  "brand": {
+    "value": "Acme",
+    "source": {
+      "format": "microdata",
+      "path": "Product.brand"
+    }
+  },
+  "sku": null,
+  "gtin": null,
+  "url": null,
+  "price": {
+    "value": {
+      "amount": 19.99,
+      "currency": "USD"
+    },
+    "source": {
+      "format": "microdata",
+      "path": "Product.offers.price"
+    }
+  },
+  "availability": {
+    "value": "in_stock",
+    "source": {
+      "format": "microdata",
+      "path": "Product.offers.availability"
+    }
+  }
+}
