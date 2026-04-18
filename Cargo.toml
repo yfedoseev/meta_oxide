@@ -21,11 +21,11 @@ c-api = []
 
 [dependencies]
 pyo3 = { version = "0.22", features = ["extension-module"], optional = true }
-scraper = "0.20"
+scraper = "0.26"
 url = "2.3"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-thiserror = "1.0"
+thiserror = "2.0"
 quick-xml = "0.37"
 
 [dev-dependencies]
@@ -34,7 +34,7 @@ insta = { version = "1.40", features = ["yaml", "json"] }
 proptest = "1.5"
 
 [build-dependencies]
-cbindgen = "0.26"
+cbindgen = "0.29"
 
 [profile.release]
 lto = true
