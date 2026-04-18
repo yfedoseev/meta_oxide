@@ -15,13 +15,13 @@
 
 ## Why MetaOxide?
 
-MetaOxide is **200-570x faster** than traditional metadata extraction libraries while extracting **13 metadata formats** out of the box. Built in Rust with native bindings for Python, Go, Node.js, Java, C#, and WebAssembly.
+MetaOxide is **200-570x faster** than traditional metadata extraction libraries while extracting **21+ metadata formats** out of the box — including 2026 additions like C2PA Content Credentials, Farcaster/Open Frames, ActivityPub, AI crawl directives, and RSS/Atom/JSON Feed. Built in Rust with native bindings for Python, Go, Node.js, Java, C#, and WebAssembly.
 
 ### Key Features
 
 - **🚀 Blazing Fast**: 100,000+ documents/sec (vs. 150-500 for alternatives)
 - **🌍 Universal**: 7 language bindings from a single Rust core
-- **📦 Comprehensive**: 13 metadata formats (Open Graph, Twitter Cards, JSON-LD, Microformats, etc.)
+- **📦 Comprehensive**: 21+ metadata formats (OG, Twitter Cards, JSON-LD, Microformats, Frames, App Links, C2PA, ActivityPub, Feeds, …)
 - **💪 Production-Ready**: 16,500+ lines of code, 700+ tests, battle-tested
 - **🧠 Memory Efficient**: 4-9x less memory than alternatives
 - **🔒 Type-Safe**: Strong typing across all languages
@@ -172,7 +172,7 @@ console.log('Title:', metadata.title);
 
 ## Supported Metadata Formats
 
-MetaOxide extracts **13 metadata formats** out of the box:
+MetaOxide extracts **21+ metadata formats** out of the box:
 
 | Format | Description | Adoption | Use Cases |
 |--------|-------------|----------|-----------|
@@ -186,9 +186,17 @@ MetaOxide extracts **13 metadata formats** out of the box:
 | **RDFa** | RDF in attributes | 5% | Linked data, semantic web |
 | **RelLinks** | Link relations | 100% | Canonical URLs, alternate versions |
 | **Web Manifest** | PWA manifest | 12% | Progressive web apps |
-| **Images** | Image metadata | 100% | Image alt text, dimensions |
-| **Authors** | Author information | 80% | Authorship, copyright |
-| **SEO** | Robots, language, viewport | 100% | Search engine optimization |
+| **oEmbed** | Embed endpoint discovery | 15% | Video/social embeds |
+| **Images / Authors / SEO** | Image metadata, authorship, robots/lang | 80–100% | SEO, attribution |
+| **Farcaster & Open Frames** ⭐ 2026 | `fc:frame:*`, `of:*` interactive embeds | growing | Social mini-apps, frame renderers |
+| **App Links** ⭐ 2026 | `al:*`, `apple-itunes-app`, `google-play-app`, `android-app-intent` | 35% | Mobile deep-linking, smart app banners |
+| **Site Verification** ⭐ 2026 | Google / Bing / Meta / Yandex / Pinterest / TikTok / Naver / Baidu / Alexa / … | 60%+ | Ownership signals, trust |
+| **AI Crawl Directives** ⭐ 2026 | `noai`, `noimageai`, `noml`, per-bot directives (GPTBot, ClaudeBot, CCBot, google-extended, …), `ai-generated` / `ai-training` | rising | AI training opt-out, content provenance |
+| **C2PA / Content Credentials** ⭐ 2026 | `c2pa:*` meta + `rel="c2pa-manifest"` | growing | AI-content provenance (EU AI Act) |
+| **ActivityPub / AS2** ⭐ 2026 | `application/activity+json` discovery + actor/object JSON parsers | growing | Fediverse (Mastodon, Threads, Pixelfed) |
+| **Speakable** ⭐ 2026 | Schema.org `SpeakableSpecification` | niche | Voice assistants, accessibility |
+| **Syndication Feeds** ⭐ 2026 | RSS 2.0, Atom 1.0, JSON Feed 1.1 — unified `Feed` / `FeedItem` | 100% of blogs/news | Feed readers, aggregators |
+| **`.well-known`** ⭐ 2026 | `security.txt` (RFC 9116), `humans.txt`, `llms.txt`, WebFinger JRD (RFC 7033) | varied | Compliance, LLM site guides, fediverse discovery |
 
 ---
 

@@ -20,6 +20,7 @@ pub mod parser_facade;
 pub mod provenance;
 pub mod serp;
 pub mod types;
+pub mod well_known;
 pub mod wikidata;
 pub mod wikipedia;
 

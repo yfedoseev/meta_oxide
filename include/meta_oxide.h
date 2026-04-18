@@ -181,6 +181,20 @@ typedef struct ManifestDiscovery {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Extract ALL metadata from HTML
  *

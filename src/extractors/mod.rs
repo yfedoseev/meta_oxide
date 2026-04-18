@@ -41,6 +41,16 @@ pub mod manifest;
 // rel-* link relationships
 pub mod rel_links;
 
+// 2026 additions
+pub mod activitypub;
+pub mod ai_directives;
+pub mod app_links;
+pub mod c2pa;
+pub mod feeds;
+pub mod frames;
+pub mod speakable;
+pub mod verification;
+
 // Re-export microformats extractors for backward compatibility
 #[allow(unused_imports)]
 pub use microformats::{extract_hcard, extract_hentry, extract_hevent};

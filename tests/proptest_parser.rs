@@ -199,4 +199,71 @@ proptest! {
     fn wikidata_parse_entity_never_panics(input in ".{0,2048}") {
         let _ = meta_oxide::wikidata::parse_entity(&input);
     }
+
+    // 2026 additions — panic-safety invariants.
+
+    #[test]
+    fn frames_extract_never_panics(html in arbitrary_html()) {
+        let _ = meta_oxide::extractors::frames::extract(&html, None);
+    }
+
+    #[test]
+    fn app_links_extract_never_panics(html in arbitrary_html()) {
+        let _ = meta_oxide::extractors::app_links::extract(&html, None);
+    }
+
+    #[test]
+    fn verification_extract_never_panics(html in arbitrary_html()) {
+        let _ = meta_oxide::extractors::verification::extract(&html);
+    }
+
+    #[test]
+    fn ai_directives_never_panics(html in arbitrary_html()) {
+        let _ = meta_oxide::extractors::ai_directives::extract(&html);
+    }
+
+    #[test]
+    fn c2pa_extract_never_panics(html in arbitrary_html()) {
+        let _ = meta_oxide::extractors::c2pa::extract(&html, None);
+    }
+
+    #[test]
+    fn activitypub_extract_never_panics(html in arbitrary_html()) {
+        let _ = meta_oxide::extractors::activitypub::extract(&html, None);
+    }
+
+    #[test]
+    fn activitypub_parse_actor_never_panics(input in ".{0,2048}") {
+        let _ = meta_oxide::extractors::activitypub::parse_as2_actor(&input);
+    }
+
+    #[test]
+    fn activitypub_parse_object_never_panics(input in ".{0,2048}") {
+        let _ = meta_oxide::extractors::activitypub::parse_as2_object(&input);
+    }
+
+    #[test]
+    fn feeds_parse_never_panics(input in proptest::collection::vec(any::<u8>(), 0..4096)) {
+        let _ = meta_oxide::extractors::feeds::parse(&input);
+    }
+
+    #[test]
+    fn security_txt_never_panics(input in ".{0,2048}") {
+        let _ = meta_oxide::well_known::parse_security_txt(&input);
+    }
+
+    #[test]
+    fn humans_txt_never_panics(input in ".{0,2048}") {
+        let _ = meta_oxide::well_known::parse_humans_txt(&input);
+    }
+
+    #[test]
+    fn llms_txt_never_panics(input in ".{0,2048}") {
+        let _ = meta_oxide::well_known::parse_llms_txt(&input);
+    }
+
+    #[test]
+    fn webfinger_parse_never_panics(input in ".{0,2048}") {
+        let _ = meta_oxide::well_known::parse_webfinger_jrd(&input);
+    }
 }

@@ -41,7 +41,12 @@ use crate::canonical::{
 use crate::errors::Result;
 use crate::extractors::common::html_utils;
 use crate::provenance::{FieldSource, FieldValue};
+use crate::types::activitypub::ActivityPubDiscovery;
+use crate::types::ai_directives::AiDirectives;
+use crate::types::app_links::AppLinks;
+use crate::types::c2pa::C2paSurface;
 use crate::types::dublin_core::DublinCore;
+use crate::types::frames::Frame;
 use crate::types::jsonld::JsonLdObject;
 use crate::types::manifest::ManifestDiscovery;
 use crate::types::meta::MetaTags;
@@ -52,6 +57,8 @@ use crate::types::microformats::{
 use crate::types::oembed::OEmbedDiscovery;
 use crate::types::rdfa::{RdfaItem, RdfaValue};
 use crate::types::social::{OpenGraph, TwitterCard};
+use crate::types::speakable::Speakable;
+use crate::types::verification::Verifications;
 use scraper::Html;
 use std::collections::HashMap;
 
@@ -86,6 +93,20 @@ impl FormatMask {
     pub const MANIFEST: Self = Self(1 << 9);
     /// `rel-*` link relationships.
     pub const REL_LINKS: Self = Self(1 << 10);
+    /// Farcaster Frames + Open Frames (`fc:frame:*`, `of:*`).
+    pub const FRAMES: Self = Self(1 << 11);
+    /// Mobile deep-link metadata (`al:*`, `apple-itunes-app`, `google-play-app`).
+    pub const APP_LINKS: Self = Self(1 << 12);
+    /// Site-ownership verification tokens.
+    pub const VERIFICATION: Self = Self(1 << 13);
+    /// AI crawl + provenance directives.
+    pub const AI_DIRECTIVES: Self = Self(1 << 14);
+    /// C2PA / Content Credentials discovery.
+    pub const C2PA: Self = Self(1 << 15);
+    /// ActivityPub / AS2 discovery.
+    pub const ACTIVITYPUB: Self = Self(1 << 16);
+    /// Schema.org speakable extraction (derived from JSON-LD).
+    pub const SPEAKABLE: Self = Self(1 << 17);
 
     /// Empty selection (no extractors run).
     pub const NONE: Self = Self(0);
@@ -101,7 +122,14 @@ impl FormatMask {
             | Self::DUBLIN_CORE.0
             | Self::OEMBED.0
             | Self::MANIFEST.0
-            | Self::REL_LINKS.0,
+            | Self::REL_LINKS.0
+            | Self::FRAMES.0
+            | Self::APP_LINKS.0
+            | Self::VERIFICATION.0
+            | Self::AI_DIRECTIVES.0
+            | Self::C2PA.0
+            | Self::ACTIVITYPUB.0
+            | Self::SPEAKABLE.0,
     );
 
     /// Whether `self` includes all bits in `other`.
@@ -262,6 +290,29 @@ impl MetaParser {
         if self.formats.contains(FormatMask::REL_LINKS) {
             graph.rel_links = crate::extractors::rel_links::extract_from_dom(dom, base)?;
         }
+        if self.formats.contains(FormatMask::FRAMES) {
+            graph.frames = crate::extractors::frames::extract_from_dom(dom, base)?;
+        }
+        if self.formats.contains(FormatMask::APP_LINKS) {
+            graph.app_links = crate::extractors::app_links::extract_from_dom(dom, base)?;
+        }
+        if self.formats.contains(FormatMask::VERIFICATION) {
+            graph.verifications = crate::extractors::verification::extract_from_dom(dom)?;
+        }
+        if self.formats.contains(FormatMask::AI_DIRECTIVES) {
+            graph.ai_directives = crate::extractors::ai_directives::extract_from_dom(dom)?;
+        }
+        if self.formats.contains(FormatMask::C2PA) {
+            graph.c2pa = crate::extractors::c2pa::extract_from_dom(dom, base)?;
+        }
+        if self.formats.contains(FormatMask::ACTIVITYPUB) {
+            graph.activitypub = crate::extractors::activitypub::extract_from_dom(dom, base)?;
+        }
+        if self.formats.contains(FormatMask::SPEAKABLE)
+            && self.formats.contains(FormatMask::JSON_LD)
+        {
+            graph.speakable = crate::extractors::speakable::collect(&graph.json_ld);
+        }
 
         if self.heuristics {
             crate::heuristics::apply(dom, &mut graph, base);
@@ -324,6 +375,23 @@ pub struct MetaGraph {
     /// only when [`MetaParser::with_heuristics`] is enabled and the heuristic
     /// layer (Phase 5) is implemented. Empty for now.
     pub heuristic_fills: HashMap<String, FieldValue<String>>,
+
+    // 2026 additions.
+    /// Farcaster Frames / Open Frames metadata.
+    pub frames: Frame,
+    /// Mobile deep-linking / App Links.
+    pub app_links: AppLinks,
+    /// Site-ownership verification tokens.
+    pub verifications: Verifications,
+    /// AI crawl + provenance directives.
+    pub ai_directives: AiDirectives,
+    /// C2PA / Content Credentials surface.
+    pub c2pa: C2paSurface,
+    /// ActivityPub / AS2 discovery.
+    pub activitypub: ActivityPubDiscovery,
+    /// Speakable fragments found in JSON-LD (populated only when both
+    /// [`FormatMask::JSON_LD`] and [`FormatMask::SPEAKABLE`] are enabled).
+    pub speakable: Vec<Speakable>,
 }
 
 impl MetaGraph {

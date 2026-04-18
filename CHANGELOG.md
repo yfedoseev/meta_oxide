@@ -16,10 +16,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.3] - 2026-04-10
 
 ### Added
+- **MetaParser facade** (`MetaParser` + `MetaGraph`) parses the DOM once and
+  dispatches to every selected extractor, replacing N round-trips through
+  `parse_html`.
+- **Canonical entity types** (`Product`, `Article`, `Person`, `Organization`,
+  `Event`, `Recipe`, `VideoObject`, `BreadcrumbList`, `Review`, `FAQPage`,
+  `KnowledgeGraph`, `Money`, `Availability`) that merge cross-format data
+  with per-field `FieldValue<T>` provenance.
+- **SERP parser** (`serp::parse_google` + `SerpGraph`) with Bing /
+  DuckDuckGo / Yandex stubs.
+- **Heuristic fallback layer** (`heuristics::apply`) for title / description /
+  image / body / date / price when structured data is missing.
+- **Wikipedia infobox** (`wikipedia::parse_infobox`) and **Wikidata**
+  (`wikidata::parse_entity`) helpers producing `canonical::KnowledgeGraph`.
+- **2026 format additions** — eight new extractors, all additive:
+  - **Farcaster / Open Frames** (`fc:frame:*`, `of:*`) — mini-app embed
+    metadata.
+  - **Mobile App Links** (`al:*`, `apple-itunes-app`, `google-play-app`,
+    `android-app-intent`).
+  - **Site-ownership verification** — Google, Bing, Meta, Yandex, Pinterest,
+    TikTok, Naver, Baidu, Norton, Alexa, Cloudflare, Shopify, with a
+    catch-all for unknown `*-verification` tags.
+  - **AI crawl + provenance directives** — `noai` / `noimageai` / `noml`,
+    per-bot directives (`GPTBot`, `CCBot`, `anthropic-ai`, `google-extended`,
+    etc.), `ai-generated` / `ai-training` / generator heuristics.
+  - **C2PA / Content Credentials** discovery (`<meta name="c2pa:*">`,
+    `<link rel="c2pa-manifest">`).
+  - **ActivityPub / AS2 discovery** + `parse_as2_actor` /
+    `parse_as2_object` JSON parsers.
+  - **Schema.org Speakable** extraction from JSON-LD.
+  - **Syndication feeds** (`feeds::parse`, `parse_rss`, `parse_atom`,
+    `parse_json_feed`) producing a unified `Feed` / `FeedItem` shape.
+  - **`.well-known` helpers** — `parse_security_txt` (RFC 9116),
+    `parse_humans_txt`, `parse_llms_txt`, `parse_webfinger_jrd` (RFC 7033).
+- **FormatMask** gained `FRAMES`, `APP_LINKS`, `VERIFICATION`,
+  `AI_DIRECTIVES`, `C2PA`, `ACTIVITYPUB`, `SPEAKABLE`.
+- **Verification layers** — 12 insta snapshots, 25 proptest invariants
+  (6400 generated cases / run), `cargo-semver-checks` CI gate.
 
 ### Changed
+- `Extractor` trait now exposes `extract_from_dom(&Html, base_url)` so new
+  consumers can parse once and dispatch to every extractor. Existing
+  `extract(html, base_url)` free functions are preserved as thin wrappers
+  (additive-only guarantee).
+- Tighter lint / dep / toolchain gating — pinned `rust-toolchain.toml`,
+  pedantic clippy cherry-picks, `cargo-deny` license allow-list.
+- New dependency: `quick-xml 0.37` (MIT) for RSS / Atom parsing.
 
 ### Fixed
+- JSON-LD tests and fixtures expanded; canonical merge accessors exercised
+  end-to-end via snapshot + property fixtures.
 
 ## [0.1.2] - 2025-11-27
 
