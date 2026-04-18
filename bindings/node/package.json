@@ -30,11 +30,11 @@
   "author": "Yury Fedoseev <yfedoseev@gmail.com>",
   "license": "MIT OR Apache-2.0",
   "devDependencies": {
-    "@napi-rs/cli": "^2.16",
-    "@types/jest": "^29",
-    "@types/node": "^20",
-    "jest": "^29",
-    "typescript": "^5"
+    "@napi-rs/cli": "^3.6",
+    "@types/jest": "^30",
+    "@types/node": "^25",
+    "jest": "^30",
+    "typescript": "^6"
   },
   "napi": {
     "name": "meta_oxide_node",
