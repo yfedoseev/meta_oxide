@@ -108,7 +108,7 @@ macro_rules! impl_py_dict {
         #[cfg(feature = "python")]
         impl $ty {
             pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-                let dict = PyDict::new_bound(py);
+                let dict = PyDict::new(py);
                 $(
                     if let Some(v) = &self.$field {
                         dict.set_item($key, v).ok();
@@ -152,7 +152,7 @@ impl_py_dict!(
 #[cfg(feature = "python")]
 impl ActivityPubDiscovery {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(v) = &self.alternate_url {
             dict.set_item("alternate_url", v).ok();
         }

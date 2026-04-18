@@ -74,7 +74,7 @@ impl Frame {
 #[cfg(feature = "python")]
 impl Frame {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(v) = &self.version {
             dict.set_item("version", v).ok();
         }
@@ -112,7 +112,7 @@ impl Frame {
 #[cfg(feature = "python")]
 impl FrameButton {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("index", self.index).ok();
         if let Some(v) = &self.label {
             dict.set_item("label", v).ok();

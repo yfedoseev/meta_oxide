@@ -38,7 +38,7 @@ impl Speakable {
 #[cfg(feature = "python")]
 impl Speakable {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if !self.css_selectors.is_empty() {
             dict.set_item("cssSelector", self.css_selectors.clone()).ok();
         }

@@ -59,7 +59,7 @@ impl AiDirectives {
 #[cfg(feature = "python")]
 impl AiDirectives {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if !self.robots.is_empty() {
             dict.set_item("robots", self.robots.clone()).ok();
         }
@@ -67,7 +67,7 @@ impl AiDirectives {
         dict.set_item("noimageai", self.noimageai).ok();
         dict.set_item("noml", self.noml).ok();
         if !self.per_bot.is_empty() {
-            let bots = PyDict::new_bound(py);
+            let bots = PyDict::new(py);
             for (k, v) in &self.per_bot {
                 bots.set_item(k, v).ok();
             }

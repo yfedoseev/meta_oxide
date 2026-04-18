@@ -15,7 +15,7 @@
 //! For each invocation, the macro generates a complete PyO3 function with:
 //! - Proper `#[pyfunction]` annotation
 //! - `#[pyo3(signature = (html, base_url=None))]` for optional parameters
-//! - GIL acquisition via `Python::with_gil`
+//! - GIL acquisition via `Python::attach`
 //! - Error conversion to PyValueError
 //! - Automatic conversion to Python objects via `.to_py_dict()`
 //!
@@ -31,8 +31,8 @@
 //! /// Extract h-card microformat data
 //! #[pyfunction]
 //! #[pyo3(signature = (html, base_url=None))]
-//! fn extract_hcard(html: &str, base_url: Option<&str>) -> PyResult<Vec<PyObject>> {
-//!     Python::with_gil(|py| {
+//! fn extract_hcard(html: &str, base_url: Option<&str>) -> PyResult<Vec<Py<PyAny>>> {
+//!     Python::attach(|py| {
 //!         let items = extractors::microformats::hcard::extract(html, base_url)
 //!             .map_err(|e| PyErr::new::<pyo3::exceptions::PyValueError, _>(e.to_string()))?;
 //!
@@ -67,8 +67,8 @@ macro_rules! py_extractor_binding {
         /// Extract microformat data
         #[pyfunction]
         #[pyo3(signature = (html, base_url=None))]
-        fn $func_name(html: &str, base_url: Option<&str>) -> PyResult<Vec<PyObject>> {
-            Python::with_gil(|py| {
+        fn $func_name(html: &str, base_url: Option<&str>) -> PyResult<Vec<Py<PyAny>>> {
+            Python::attach(|py| {
                 let items = extractors::microformats::$module::extract(html, base_url)
                     .map_err(|e| PyErr::new::<pyo3::exceptions::PyValueError, _>(e.to_string()))?;
 

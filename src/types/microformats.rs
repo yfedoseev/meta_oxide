@@ -1,7 +1,10 @@
 #[cfg(feature = "python")]
 use pyo3::prelude::*;
 #[cfg(feature = "python")]
+#[cfg(feature = "python")]
 use pyo3::types::PyDict;
+#[cfg(feature = "python")]
+use pyo3::IntoPyObjectExt;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -16,20 +19,20 @@ pub struct MicroformatItem {
 #[cfg(feature = "python")]
 impl MicroformatItem {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("type", self.type_.clone()).unwrap();
 
         // Convert properties
-        let props = PyDict::new_bound(py);
+        let props = PyDict::new(py);
         for (key, values) in &self.properties {
-            let py_values: Vec<PyObject> = values.iter().map(|v| v.to_python(py)).collect();
+            let py_values: Vec<Py<PyAny>> = values.iter().map(|v| v.to_python(py)).collect();
             props.set_item(key, py_values).unwrap();
         }
         dict.set_item("properties", props).unwrap();
 
         // Convert children if present
         if let Some(children) = &self.children {
-            let py_children: Vec<PyObject> =
+            let py_children: Vec<Py<PyAny>> =
                 children.iter().map(|child| child.to_py_dict(py).into()).collect();
             dict.set_item("children", py_children).unwrap();
         }
@@ -49,9 +52,9 @@ pub enum PropertyValue {
 
 #[cfg(feature = "python")]
 impl PropertyValue {
-    pub fn to_python(&self, py: Python) -> PyObject {
+    pub fn to_python(&self, py: Python) -> Py<PyAny> {
         match self {
-            PropertyValue::Text(s) | PropertyValue::Url(s) => s.to_object(py),
+            PropertyValue::Text(s) | PropertyValue::Url(s) => s.into_py_any(py).unwrap(),
             PropertyValue::Nested(item) => item.to_py_dict(py).into(),
         }
     }
@@ -73,7 +76,7 @@ pub struct HCard {
 #[cfg(feature = "python")]
 impl HCard {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(name) = &self.name {
             dict.set_item("name", name).unwrap();
@@ -122,7 +125,7 @@ pub struct HEntry {
 #[cfg(feature = "python")]
 impl HEntry {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(name) = &self.name {
             dict.set_item("name", name).unwrap();
@@ -173,7 +176,7 @@ pub struct HEvent {
 #[cfg(feature = "python")]
 impl HEvent {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(name) = &self.name {
             dict.set_item("name", name).unwrap();
@@ -238,7 +241,7 @@ pub struct HReview {
 #[cfg(feature = "python")]
 impl HReview {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         // Modern properties
         if let Some(name) = &self.name {
@@ -321,7 +324,7 @@ pub struct HRecipe {
 #[cfg(feature = "python")]
 impl HRecipe {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(name) = &self.name {
             dict.set_item("name", name).unwrap();
@@ -383,7 +386,7 @@ pub struct HProduct {
 #[cfg(feature = "python")]
 impl HProduct {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(name) = &self.name {
             dict.set_item("name", name).unwrap();
@@ -434,7 +437,7 @@ pub struct HFeed {
 #[cfg(feature = "python")]
 impl HFeed {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(name) = &self.name {
             dict.set_item("name", name).unwrap();
@@ -473,7 +476,7 @@ pub struct HAdr {
 #[cfg(feature = "python")]
 impl HAdr {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(street_address) = &self.street_address {
             dict.set_item("street_address", street_address).unwrap();
@@ -517,7 +520,7 @@ pub struct HGeo {
 #[cfg(feature = "python")]
 impl HGeo {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(latitude) = self.latitude {
             dict.set_item("latitude", latitude).unwrap();

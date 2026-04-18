@@ -96,7 +96,7 @@ impl AppLinks {
 #[cfg(feature = "python")]
 impl AppLinks {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(v) = &self.ios {
             dict.set_item("ios", v.to_py_dict(py)).ok();
         }
@@ -131,7 +131,7 @@ impl AppLinks {
 #[cfg(feature = "python")]
 impl AppLinkPlatform {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(v) = &self.url {
             dict.set_item("url", v).ok();
         }
@@ -154,7 +154,7 @@ impl AppLinkPlatform {
 #[cfg(feature = "python")]
 impl AppleItunesApp {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(v) = &self.app_id {
             dict.set_item("app_id", v).ok();
         }
@@ -171,7 +171,7 @@ impl AppleItunesApp {
 #[cfg(feature = "python")]
 impl GooglePlayApp {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(v) = &self.app_id {
             dict.set_item("app_id", v).ok();
         }

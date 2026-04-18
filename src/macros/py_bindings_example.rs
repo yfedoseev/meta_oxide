@@ -9,8 +9,8 @@
 //! /// Extract h-card microformat data
 //! #[pyfunction]
 //! #[pyo3(signature = (html, base_url=None))]
-//! fn extract_hcard(html: &str, base_url: Option<&str>) -> PyResult<Vec<PyObject>> {
-//!     Python::with_gil(|py| {
+//! fn extract_hcard(html: &str, base_url: Option<&str>) -> PyResult<Vec<Py<PyAny>>> {
+//!     Python::attach(|py| {
 //!         let cards = extractors::microformats::hcard::extract(html, base_url)
 //!             .map_err(|e| PyErr::new::<pyo3::exceptions::PyValueError, _>(e.to_string()))?;
 //!
@@ -21,8 +21,8 @@
 //! /// Extract h-entry microformat data
 //! #[pyfunction]
 //! #[pyo3(signature = (html, base_url=None))]
-//! fn extract_hentry(html: &str, base_url: Option<&str>) -> PyResult<Vec<PyObject>> {
-//!     Python::with_gil(|py| {
+//! fn extract_hentry(html: &str, base_url: Option<&str>) -> PyResult<Vec<Py<PyAny>>> {
+//!     Python::attach(|py| {
 //!         let entries = extractors::microformats::hentry::extract(html, base_url)
 //!             .map_err(|e| PyErr::new::<pyo3::exceptions::PyValueError, _>(e.to_string()))?;
 //!
@@ -33,8 +33,8 @@
 //! /// Extract h-event microformat data
 //! #[pyfunction]
 //! #[pyo3(signature = (html, base_url=None))]
-//! fn extract_hevent(html: &str, base_url: Option<&str>) -> PyResult<Vec<PyObject>> {
-//!     Python::with_gil(|py| {
+//! fn extract_hevent(html: &str, base_url: Option<&str>) -> PyResult<Vec<Py<PyAny>>> {
+//!     Python::attach(|py| {
 //!         let events = extractors::microformats::hevent::extract(html, base_url)
 //!             .map_err(|e| PyErr::new::<pyo3::exceptions::PyValueError, _>(e.to_string()))?;
 //!

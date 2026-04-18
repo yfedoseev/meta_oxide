@@ -150,7 +150,7 @@ impl RobotsDirective {
 #[cfg(feature = "python")]
 impl MetaTags {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(ref v) = self.title {
             dict.set_item("title", v).unwrap();
@@ -303,7 +303,7 @@ impl MetaTags {
 #[cfg(feature = "python")]
 impl RobotsDirective {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         dict.set_item("raw", &self.raw).unwrap();
         if let Some(v) = self.index {
@@ -332,7 +332,7 @@ impl RobotsDirective {
 #[cfg(feature = "python")]
 impl AlternateLink {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("href", &self.href).unwrap();
         if let Some(ref v) = self.hreflang {
             dict.set_item("hreflang", v).unwrap();
@@ -350,7 +350,7 @@ impl AlternateLink {
 #[cfg(feature = "python")]
 impl FeedLink {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("href", &self.href).unwrap();
         dict.set_item("type", &self.r#type).unwrap();
         if let Some(ref v) = self.title {

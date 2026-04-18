@@ -78,7 +78,7 @@ impl MicrodataItem {
 impl MicrodataItem {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         // Add type(s) - always as a list for consistency
         if let Some(ref types) = self.item_type {
@@ -104,7 +104,7 @@ impl MicrodataItem {
                 }
             } else {
                 // Multiple values - add as list
-                let list = PyList::empty_bound(py);
+                let list = PyList::empty(py);
                 for value in values {
                     match value {
                         PropertyValue::Text(s) => {
@@ -210,7 +210,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_to_py_dict_basic() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let mut item =
                 MicrodataItem::new().with_type(vec!["https://schema.org/Person".to_string()]);
             item.add_text_property("name".to_string(), "Jane Doe".to_string());
@@ -226,7 +226,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_to_py_dict_with_nested_item() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let mut item =
                 MicrodataItem::new().with_type(vec!["https://schema.org/Person".to_string()]);
             item.add_text_property("name".to_string(), "Jane Doe".to_string());
@@ -248,7 +248,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_to_py_dict_multiple_values() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let mut item = MicrodataItem::new();
             item.add_text_property("telephone".to_string(), "555-1234".to_string());
             item.add_text_property("telephone".to_string(), "555-5678".to_string());

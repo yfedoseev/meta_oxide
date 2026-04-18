@@ -6,7 +6,10 @@
 #[cfg(feature = "python")]
 use pyo3::prelude::*;
 #[cfg(feature = "python")]
+#[cfg(feature = "python")]
 use pyo3::types::{PyDict, PyList};
+#[cfg(feature = "python")]
+use pyo3::IntoPyObjectExt;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -88,7 +91,7 @@ impl RdfaItem {
 impl RdfaItem {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         // Add type(s) - always as a list for consistency
         if let Some(ref types) = self.type_of {
@@ -112,7 +115,7 @@ impl RdfaItem {
                 dict.set_item(key, values[0].to_py_value(py)).unwrap();
             } else {
                 // Multiple values - add as list
-                let list = PyList::empty_bound(py);
+                let list = PyList::empty(py);
                 for value in values {
                     list.append(value.to_py_value(py)).unwrap();
                 }
@@ -127,16 +130,16 @@ impl RdfaItem {
 #[cfg(feature = "python")]
 impl RdfaValue {
     /// Convert to Python value
-    pub fn to_py_value(&self, py: Python) -> PyObject {
+    pub fn to_py_value(&self, py: Python) -> Py<PyAny> {
         match self {
-            RdfaValue::Literal(s) => s.to_object(py),
-            RdfaValue::Resource(uri) => uri.to_object(py),
-            RdfaValue::Item(item) => item.to_py_dict(py).to_object(py),
+            RdfaValue::Literal(s) => s.into_py_any(py).unwrap(),
+            RdfaValue::Resource(uri) => uri.into_py_any(py).unwrap(),
+            RdfaValue::Item(item) => item.to_py_dict(py).into_py_any(py).unwrap(),
             RdfaValue::TypedLiteral { value, datatype } => {
-                let dict = PyDict::new_bound(py);
+                let dict = PyDict::new(py);
                 dict.set_item("value", value).unwrap();
                 dict.set_item("datatype", datatype).unwrap();
-                dict.to_object(py)
+                dict.into_py_any(py).unwrap()
             }
         }
     }
@@ -304,7 +307,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_to_py_dict_basic() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let mut item = RdfaItem::new().with_type(vec!["https://schema.org/Person".to_string()]);
             item.add_property("name".to_string(), RdfaValue::Literal("Jane Doe".to_string()));
 
@@ -319,7 +322,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_to_py_dict_with_vocab() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let item = RdfaItem::new().with_vocab("https://schema.org/".to_string());
 
             let py_dict = item.to_py_dict(py);
@@ -332,7 +335,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_to_py_dict_with_about() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let item = RdfaItem::new().with_about("https://example.com/jane".to_string());
 
             let py_dict = item.to_py_dict(py);
@@ -345,7 +348,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_to_py_dict_multiple_values() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let mut item = RdfaItem::new();
             item.add_property("telephone".to_string(), RdfaValue::Literal("555-1234".to_string()));
             item.add_property("telephone".to_string(), RdfaValue::Literal("555-5678".to_string()));
@@ -363,7 +366,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_to_py_dict_nested_item() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let mut item = RdfaItem::new();
             let mut address =
                 RdfaItem::new().with_type(vec!["https://schema.org/PostalAddress".to_string()]);
@@ -386,7 +389,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_rdfa_value_to_py_literal() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let value = RdfaValue::Literal("test".to_string());
             let py_value = value.to_py_value(py);
             let py_str: String = py_value.extract(py).unwrap();
@@ -397,7 +400,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_rdfa_value_to_py_resource() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let value = RdfaValue::Resource("https://example.com".to_string());
             let py_value = value.to_py_value(py);
             let py_str: String = py_value.extract(py).unwrap();
@@ -408,7 +411,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_rdfa_value_to_py_typed_literal() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let value = RdfaValue::TypedLiteral {
                 value: "42".to_string(),
                 datatype: "xsd:integer".to_string(),
@@ -423,7 +426,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_rdfa_value_to_py_nested_item() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let item = RdfaItem::new().with_type(vec!["Person".to_string()]);
             let value = RdfaValue::Item(Box::new(item));
             let py_value = value.to_py_value(py);

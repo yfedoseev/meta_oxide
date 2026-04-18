@@ -109,7 +109,7 @@ pub struct FeedItem {
 #[cfg(feature = "python")]
 impl Feed {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item(
             "kind",
             match self.kind {
@@ -155,7 +155,7 @@ impl Feed {
 #[cfg(feature = "python")]
 impl FeedAuthor {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(v) = &self.name {
             dict.set_item("name", v).ok();
         }
@@ -172,7 +172,7 @@ impl FeedAuthor {
 #[cfg(feature = "python")]
 impl FeedItem {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(v) = &self.id {
             dict.set_item("id", v).ok();
         }

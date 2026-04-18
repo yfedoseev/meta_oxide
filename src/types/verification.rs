@@ -70,7 +70,7 @@ impl Verifications {
 #[cfg(feature = "python")]
 impl Verifications {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         macro_rules! opt {
             ($f:ident, $k:literal) => {
                 if let Some(v) = &self.$f {
@@ -91,7 +91,7 @@ impl Verifications {
         opt!(cloudflare, "cloudflare");
         opt!(shopify, "shopify");
         if !self.other.is_empty() {
-            let other = PyDict::new_bound(py);
+            let other = PyDict::new(py);
             for (k, v) in &self.other {
                 other.set_item(k, v).ok();
             }

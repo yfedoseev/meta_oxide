@@ -6,7 +6,10 @@
 #[cfg(feature = "python")]
 use pyo3::prelude::*;
 #[cfg(feature = "python")]
+#[cfg(feature = "python")]
 use pyo3::types::PyDict;
+#[cfg(feature = "python")]
+use pyo3::IntoPyObjectExt;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
@@ -824,33 +827,33 @@ pub struct AggregateRating {
 
 /// Helper function to convert serde_json::Value to Python objects recursively
 #[cfg(feature = "python")]
-fn json_value_to_py(py: Python, value: &Value) -> PyObject {
+fn json_value_to_py(py: Python, value: &Value) -> Py<PyAny> {
     match value {
-        Value::String(s) => s.to_object(py),
+        Value::String(s) => s.into_py_any(py).unwrap(),
         Value::Number(n) => {
             if let Some(i) = n.as_i64() {
-                i.to_object(py)
+                i.into_py_any(py).unwrap()
             } else if let Some(f) = n.as_f64() {
-                f.to_object(py)
+                f.into_py_any(py).unwrap()
             } else {
-                n.to_string().to_object(py)
+                n.to_string().into_py_any(py).unwrap()
             }
         }
-        Value::Bool(b) => b.to_object(py),
+        Value::Bool(b) => b.into_py_any(py).unwrap(),
         Value::Null => py.None(),
         Value::Array(arr) => {
-            let py_list = pyo3::types::PyList::empty_bound(py);
+            let py_list = pyo3::types::PyList::empty(py);
             for item in arr {
                 py_list.append(json_value_to_py(py, item)).unwrap();
             }
-            py_list.to_object(py)
+            py_list.into_py_any(py).unwrap()
         }
         Value::Object(map) => {
-            let py_dict = PyDict::new_bound(py);
+            let py_dict = PyDict::new(py);
             for (key, val) in map {
                 py_dict.set_item(key, json_value_to_py(py, val)).unwrap();
             }
-            py_dict.to_object(py)
+            py_dict.into_py_any(py).unwrap()
         }
     }
 }
@@ -864,7 +867,7 @@ impl JsonLdObject {
     /// preserving all JSON-LD special properties (@context, @type, @id, @graph)
     /// and all other Schema.org properties.
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(ref context) = self.context {
             dict.set_item("@context", json_value_to_py(py, context)).unwrap();
@@ -1099,7 +1102,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_jsonld_object_to_py_dict() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let json = r#"{
                 "@context": "https://schema.org",
                 "@type": "Article",

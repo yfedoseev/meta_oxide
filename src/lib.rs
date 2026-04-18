@@ -6,6 +6,8 @@ use pyo3::prelude::*;
 #[cfg(feature = "python")]
 use pyo3::types::{PyDict, PyList};
 #[cfg(feature = "python")]
+use pyo3::IntoPyObjectExt;
+#[cfg(feature = "python")]
 use std::collections::HashMap;
 
 pub mod canonical;
@@ -41,8 +43,8 @@ pub use extractors::common::{html_utils, url_utils};
 fn extract_microformats(
     html: &str,
     base_url: Option<&str>,
-) -> PyResult<HashMap<String, Vec<PyObject>>> {
-    Python::with_gil(|py| {
+) -> PyResult<HashMap<String, Vec<Py<PyAny>>>> {
+    Python::attach(|py| {
         let result = parser::parse_html(html, base_url)
             .map_err(|e| PyErr::new::<pyo3::exceptions::PyValueError, _>(e.to_string()))?;
 
@@ -50,7 +52,7 @@ fn extract_microformats(
 
         // Convert Rust data structures to Python objects
         for (format_type, items) in result.iter() {
-            let py_items: Vec<PyObject> =
+            let py_items: Vec<Py<PyAny>> =
                 items.iter().map(|item| item.to_py_dict(py).into()).collect();
             py_result.insert(format_type.clone(), py_items);
         }
@@ -213,7 +215,7 @@ fn extract_jsonld(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py
     let objects = extractors::jsonld::extract(html, base_url)
         .map_err(|e| PyErr::new::<pyo3::exceptions::PyRuntimeError, _>(e.to_string()))?;
 
-    let list = PyList::empty_bound(py);
+    let list = PyList::empty(py);
     for obj in objects {
         list.append(obj.to_py_dict(py)).unwrap();
     }
@@ -244,7 +246,7 @@ fn extract_microdata(py: Python, html: &str, base_url: Option<&str>) -> PyResult
     let items = extractors::microdata::extract(html, base_url)
         .map_err(|e| PyErr::new::<pyo3::exceptions::PyRuntimeError, _>(e.to_string()))?;
 
-    let list = PyList::empty_bound(py);
+    let list = PyList::empty(py);
     for item in items {
         list.append(item.to_py_dict(py)).unwrap();
     }
@@ -350,15 +352,15 @@ fn extract_oembed(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py
 #[cfg(feature = "python")]
 #[pyfunction]
 #[pyo3(signature = (html, base_url=None))]
-fn extract_rdfa(py: Python, html: &str, base_url: Option<&str>) -> PyResult<PyObject> {
+fn extract_rdfa(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<PyAny>> {
     let items = extractors::rdfa::extract(html, base_url)
         .map_err(|e| PyErr::new::<pyo3::exceptions::PyRuntimeError, _>(e.to_string()))?;
 
-    let list = PyList::empty_bound(py);
+    let list = PyList::empty(py);
     for item in items {
         list.append(item.to_py_dict(py)).unwrap();
     }
-    Ok(list.to_object(py))
+    Ok(list.into_py_any(py).unwrap())
 }
 
 /// Extract Web App Manifest link from HTML
@@ -447,7 +449,7 @@ fn parse_manifest(py: Python, json: &str, base_url: Option<&str>) -> PyResult<Py
 #[pyfunction]
 #[pyo3(signature = (html, base_url=None))]
 fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<PyDict>> {
-    let dict = PyDict::new_bound(py);
+    let dict = PyDict::new(py);
 
     // Extract Phase 1: Standard Meta Tags
     match extractors::meta::extract(html, base_url) {
@@ -484,7 +486,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     match extractors::jsonld::extract(html, base_url) {
         Ok(objects) => {
             if !objects.is_empty() {
-                let list = PyList::empty_bound(py);
+                let list = PyList::empty(py);
                 for obj in objects {
                     list.append(obj.to_py_dict(py)).unwrap();
                 }
@@ -500,7 +502,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     match extractors::microdata::extract(html, base_url) {
         Ok(items) => {
             if !items.is_empty() {
-                let list = PyList::empty_bound(py);
+                let list = PyList::empty(py);
                 for item in items {
                     list.append(item.to_py_dict(py)).unwrap();
                 }
@@ -513,13 +515,13 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     }
 
     // Extract Phase 7: Microformats (already implemented)
-    let mf_dict = PyDict::new_bound(py);
+    let mf_dict = PyDict::new(py);
     let mut has_microformats = false;
 
     // Extract h-card
     if let Ok(hcards) = extractors::microformats::hcard::extract(html, base_url) {
         if !hcards.is_empty() {
-            let cards: Vec<_> = hcards.iter().map(|card| card.to_py_dict(py).into_py(py)).collect();
+            let cards: Vec<_> = hcards.iter().map(|card| card.to_py_dict(py).into_any()).collect();
             mf_dict.set_item("h-card", cards)?;
             has_microformats = true;
         }
@@ -528,7 +530,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     // Extract h-entry
     if let Ok(entries) = extractors::microformats::hentry::extract(html, base_url) {
         if !entries.is_empty() {
-            let entries_py: Vec<_> = entries.iter().map(|e| e.to_py_dict(py).into_py(py)).collect();
+            let entries_py: Vec<_> = entries.iter().map(|e| e.to_py_dict(py).into_any()).collect();
             mf_dict.set_item("h-entry", entries_py)?;
             has_microformats = true;
         }
@@ -537,7 +539,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     // Extract h-event
     if let Ok(events) = extractors::microformats::hevent::extract(html, base_url) {
         if !events.is_empty() {
-            let events_py: Vec<_> = events.iter().map(|e| e.to_py_dict(py).into_py(py)).collect();
+            let events_py: Vec<_> = events.iter().map(|e| e.to_py_dict(py).into_any()).collect();
             mf_dict.set_item("h-event", events_py)?;
             has_microformats = true;
         }
@@ -546,7 +548,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     // Extract h-review
     if let Ok(reviews) = extractors::microformats::hreview::extract(html, base_url) {
         if !reviews.is_empty() {
-            let reviews_py: Vec<_> = reviews.iter().map(|r| r.to_py_dict(py).into_py(py)).collect();
+            let reviews_py: Vec<_> = reviews.iter().map(|r| r.to_py_dict(py).into_any()).collect();
             mf_dict.set_item("h-review", reviews_py)?;
             has_microformats = true;
         }
@@ -555,7 +557,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     // Extract h-recipe
     if let Ok(recipes) = extractors::microformats::hrecipe::extract(html, base_url) {
         if !recipes.is_empty() {
-            let recipes_py: Vec<_> = recipes.iter().map(|r| r.to_py_dict(py).into_py(py)).collect();
+            let recipes_py: Vec<_> = recipes.iter().map(|r| r.to_py_dict(py).into_any()).collect();
             mf_dict.set_item("h-recipe", recipes_py)?;
             has_microformats = true;
         }
@@ -565,7 +567,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     if let Ok(products) = extractors::microformats::hproduct::extract(html, base_url) {
         if !products.is_empty() {
             let products_py: Vec<_> =
-                products.iter().map(|p| p.to_py_dict(py).into_py(py)).collect();
+                products.iter().map(|p| p.to_py_dict(py).into_any()).collect();
             mf_dict.set_item("h-product", products_py)?;
             has_microformats = true;
         }
@@ -574,7 +576,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     // Extract h-feed
     if let Ok(feeds) = extractors::microformats::hfeed::extract(html, base_url) {
         if !feeds.is_empty() {
-            let feeds_py: Vec<_> = feeds.iter().map(|f| f.to_py_dict(py).into_py(py)).collect();
+            let feeds_py: Vec<_> = feeds.iter().map(|f| f.to_py_dict(py).into_any()).collect();
             mf_dict.set_item("h-feed", feeds_py)?;
             has_microformats = true;
         }
@@ -584,7 +586,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     if let Ok(addresses) = extractors::microformats::hadr::extract(html, base_url) {
         if !addresses.is_empty() {
             let addresses_py: Vec<_> =
-                addresses.iter().map(|a| a.to_py_dict(py).into_py(py)).collect();
+                addresses.iter().map(|a| a.to_py_dict(py).into_any()).collect();
             mf_dict.set_item("h-adr", addresses_py)?;
             has_microformats = true;
         }
@@ -593,7 +595,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     // Extract h-geo
     if let Ok(geos) = extractors::microformats::hgeo::extract(html, base_url) {
         if !geos.is_empty() {
-            let geos_py: Vec<_> = geos.iter().map(|g| g.to_py_dict(py).into_py(py)).collect();
+            let geos_py: Vec<_> = geos.iter().map(|g| g.to_py_dict(py).into_any()).collect();
             mf_dict.set_item("h-geo", geos_py)?;
             has_microformats = true;
         }
@@ -641,7 +643,7 @@ fn extract_all(py: Python, html: &str, base_url: Option<&str>) -> PyResult<Py<Py
     match extractors::rdfa::extract(html, base_url) {
         Ok(rdfa_items) => {
             if !rdfa_items.is_empty() {
-                let list = PyList::empty_bound(py);
+                let list = PyList::empty(py);
                 for item in rdfa_items {
                     list.append(item.to_py_dict(py)).unwrap();
                 }
@@ -730,7 +732,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_basic() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -747,7 +749,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_with_opengraph() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -764,7 +766,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_with_jsonld() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -782,7 +784,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_with_microdata() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <body>
@@ -800,7 +802,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_with_microformats() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <div class="h-card">
                 <span class="p-name">Jane</span>
@@ -814,7 +816,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_with_base_url() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -830,7 +832,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_comprehensive() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -861,7 +863,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_empty_html() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = "<html><head></head></html>";
             let result = extract_all(py, html, None);
             assert!(result.is_ok());
@@ -871,7 +873,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_with_malformed_jsonld() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -891,7 +893,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_with_dublin_core() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -907,7 +909,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_with_oembed() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -924,7 +926,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_with_rel_links() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -941,7 +943,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_multiple_formats_overlap() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             // News article with both OG and JSON-LD
             let html = r#"
             <html>
@@ -969,7 +971,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_unicode_content() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -986,7 +988,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_html_entities() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -1003,7 +1005,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_with_comments() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let html = r#"
             <html>
                 <head>
@@ -1021,7 +1023,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_deeply_nested() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let mut html = String::from("<html><body>");
             for _ in 0..50 {
                 html.push_str("<div>");
@@ -1040,7 +1042,7 @@ mod integration_tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_extract_all_many_items() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let mut html = String::from("<html><body>");
             for i in 0..100 {
                 html.push_str(&format!(

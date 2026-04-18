@@ -63,7 +63,7 @@ impl OEmbedDiscovery {
 #[cfg(feature = "python")]
 impl OEmbedEndpoint {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         dict.set_item("href", &self.href).unwrap();
         dict.set_item(
@@ -86,7 +86,7 @@ impl OEmbedEndpoint {
 #[cfg(feature = "python")]
 impl OEmbedDiscovery {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if !self.json_endpoints.is_empty() {
             let json_eps: Vec<_> = self.json_endpoints.iter().map(|ep| ep.to_py_dict(py)).collect();

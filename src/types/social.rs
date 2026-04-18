@@ -238,7 +238,7 @@ pub struct TwitterPlayer {
 impl OpenGraph {
     /// Convert OpenGraph to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         // Basic metadata
         if let Some(ref v) = self.title {
@@ -305,7 +305,7 @@ impl OpenGraph {
 impl OgImage {
     /// Convert OgImage to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         let _ = dict.set_item("url", &self.url);
         if let Some(ref v) = self.secure_url {
             let _ = dict.set_item("secure_url", v);
@@ -330,7 +330,7 @@ impl OgImage {
 impl OgVideo {
     /// Convert OgVideo to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         let _ = dict.set_item("url", &self.url);
         if let Some(ref v) = self.secure_url {
             let _ = dict.set_item("secure_url", v);
@@ -352,7 +352,7 @@ impl OgVideo {
 impl OgAudio {
     /// Convert OgAudio to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         let _ = dict.set_item("url", &self.url);
         if let Some(ref v) = self.secure_url {
             let _ = dict.set_item("secure_url", v);
@@ -368,7 +368,7 @@ impl OgAudio {
 impl OgArticle {
     /// Convert OgArticle to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(ref v) = self.published_time {
             let _ = dict.set_item("published_time", v);
         }
@@ -395,7 +395,7 @@ impl OgArticle {
 impl OgBook {
     /// Convert OgBook to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if !self.author.is_empty() {
             let _ = dict.set_item("author", self.author.clone());
         }
@@ -416,7 +416,7 @@ impl OgBook {
 impl OgProfile {
     /// Convert OgProfile to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(ref v) = self.first_name {
             let _ = dict.set_item("first_name", v);
         }
@@ -437,7 +437,7 @@ impl OgProfile {
 impl TwitterCard {
     /// Convert TwitterCard to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(ref v) = self.card {
             let _ = dict.set_item("card", v);
@@ -483,7 +483,7 @@ impl TwitterCard {
 impl TwitterApp {
     /// Convert TwitterApp to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(ref v) = self.name_iphone {
             let _ = dict.set_item("name_iphone", v);
         }
@@ -522,7 +522,7 @@ impl TwitterApp {
 impl TwitterPlayer {
     /// Convert TwitterPlayer to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         let _ = dict.set_item("url", &self.url);
         if let Some(v) = self.width {
             let _ = dict.set_item("width", v);

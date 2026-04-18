@@ -64,7 +64,7 @@ impl C2paSurface {
 #[cfg(feature = "python")]
 impl C2paSurface {
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         macro_rules! opt {
             ($f:ident, $k:literal) => {
                 if let Some(v) = &self.$f {
@@ -81,7 +81,7 @@ impl C2paSurface {
         opt!(manifest_url, "manifest_url");
         opt!(thumbnail_url, "thumbnail_url");
         if !self.other.is_empty() {
-            let other = PyDict::new_bound(py);
+            let other = PyDict::new(py);
             for (k, v) in &self.other {
                 other.set_item(k, v).ok();
             }

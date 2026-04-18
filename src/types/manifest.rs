@@ -180,7 +180,7 @@ pub struct ManifestDiscovery {
 impl WebAppManifest {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
 
         if let Some(ref name) = self.name {
             dict.set_item("name", name).unwrap();
@@ -224,7 +224,7 @@ impl WebAppManifest {
 
         // Icons array
         if !self.icons.is_empty() {
-            let icons_list = PyList::empty_bound(py);
+            let icons_list = PyList::empty(py);
             for icon in &self.icons {
                 icons_list.append(icon.to_py_dict(py)).unwrap();
             }
@@ -233,7 +233,7 @@ impl WebAppManifest {
 
         // Related applications array
         if !self.related_applications.is_empty() {
-            let apps_list = PyList::empty_bound(py);
+            let apps_list = PyList::empty(py);
             for app in &self.related_applications {
                 apps_list.append(app.to_py_dict(py)).unwrap();
             }
@@ -247,7 +247,7 @@ impl WebAppManifest {
 
         // Screenshots array
         if !self.screenshots.is_empty() {
-            let screenshots_list = PyList::empty_bound(py);
+            let screenshots_list = PyList::empty(py);
             for screenshot in &self.screenshots {
                 screenshots_list.append(screenshot.to_py_dict(py)).unwrap();
             }
@@ -256,7 +256,7 @@ impl WebAppManifest {
 
         // Shortcuts array
         if !self.shortcuts.is_empty() {
-            let shortcuts_list = PyList::empty_bound(py);
+            let shortcuts_list = PyList::empty(py);
             for shortcut in &self.shortcuts {
                 shortcuts_list.append(shortcut.to_py_dict(py)).unwrap();
             }
@@ -271,7 +271,7 @@ impl WebAppManifest {
 impl ManifestIcon {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("src", &self.src).unwrap();
         if let Some(ref sizes) = self.sizes {
             dict.set_item("sizes", sizes).unwrap();
@@ -290,7 +290,7 @@ impl ManifestIcon {
 impl RelatedApplication {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("platform", &self.platform).unwrap();
         if let Some(ref url) = self.url {
             dict.set_item("url", url).unwrap();
@@ -306,7 +306,7 @@ impl RelatedApplication {
 impl ManifestImage {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("src", &self.src).unwrap();
         if let Some(ref sizes) = self.sizes {
             dict.set_item("sizes", sizes).unwrap();
@@ -325,7 +325,7 @@ impl ManifestImage {
 impl ManifestShortcut {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("name", &self.name).unwrap();
         dict.set_item("url", &self.url).unwrap();
         if let Some(ref short_name) = self.short_name {
@@ -335,7 +335,7 @@ impl ManifestShortcut {
             dict.set_item("description", description).unwrap();
         }
         if !self.icons.is_empty() {
-            let icons_list = PyList::empty_bound(py);
+            let icons_list = PyList::empty(py);
             for icon in &self.icons {
                 icons_list.append(icon.to_py_dict(py)).unwrap();
             }
@@ -349,7 +349,7 @@ impl ManifestShortcut {
 impl ManifestDiscovery {
     /// Convert to Python dictionary
     pub fn to_py_dict(&self, py: Python) -> Py<PyDict> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         if let Some(ref href) = self.href {
             dict.set_item("href", href).unwrap();
         }
@@ -423,7 +423,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_manifest_to_py_dict() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let manifest = WebAppManifest {
                 name: Some("Test App".to_string()),
                 short_name: Some("Test".to_string()),
@@ -441,7 +441,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_manifest_icon_to_py_dict() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let icon = ManifestIcon {
                 src: "/icon.png".to_string(),
                 sizes: Some("192x192".to_string()),
@@ -496,7 +496,7 @@ mod tests {
     #[test]
     #[cfg(feature = "python")]
     fn test_manifest_discovery_to_py_dict() {
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let discovery =
                 ManifestDiscovery { href: Some("/manifest.json".to_string()), manifest: None };
 
