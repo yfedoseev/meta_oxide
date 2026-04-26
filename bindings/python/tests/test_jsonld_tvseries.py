@@ -4,8 +4,9 @@ Tests for JSON-LD TVSeries type
 Tests the extraction of Schema.org TVSeries structured data for TV shows and series
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestTVSeriesBasic:

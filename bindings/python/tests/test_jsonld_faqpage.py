@@ -5,8 +5,9 @@ Following Schema.org FAQPage specification:
 https://schema.org/FAQPage
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestFAQPageBasic:

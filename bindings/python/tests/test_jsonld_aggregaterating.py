@@ -5,8 +5,9 @@ Tests the extraction and parsing of AggregateRating structured data following TD
 AggregateRating represents the average rating from multiple reviews/ratings.
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestAggregateRatingBasic:

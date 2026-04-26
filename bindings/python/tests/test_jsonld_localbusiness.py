@@ -5,8 +5,9 @@ Following TDD approach: These tests are written FIRST and will initially fail.
 Once the LocalBusiness type is implemented, these tests should pass.
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestLocalBusinessBasic:

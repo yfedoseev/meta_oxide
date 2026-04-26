@@ -4,8 +4,9 @@ Tests for JSON-LD VideoObject type
 Tests the extraction of Schema.org VideoObject structured data
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestVideoObjectBasic:

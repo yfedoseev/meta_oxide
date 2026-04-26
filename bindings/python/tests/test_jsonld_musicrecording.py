@@ -5,8 +5,9 @@ This module tests the extraction of MusicRecording structured data from JSON-LD,
 following the Schema.org MusicRecording specification.
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestMusicRecordingBasic:

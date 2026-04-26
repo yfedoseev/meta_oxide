@@ -4,8 +4,9 @@ Tests for JSON-LD JobPosting type (Schema.org JobPosting)
 Following TDD approach - tests written FIRST before implementation
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestJobPostingBasic:

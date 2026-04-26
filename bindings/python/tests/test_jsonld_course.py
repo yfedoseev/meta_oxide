@@ -4,8 +4,9 @@ Tests for JSON-LD Course type (Schema.org Course)
 Following TDD approach - tests written FIRST before implementation
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestCourseBasic:

@@ -5,8 +5,9 @@ This module tests the extraction of HowTo structured data from JSON-LD,
 following the Schema.org HowTo specification.
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestHowToBasic:

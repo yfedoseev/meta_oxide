@@ -4,8 +4,9 @@ Tests for JSON-LD extraction (Phase 3 - 41% adoption)
 Tests the extract_jsonld() function and its integration with extract_all()
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestJSONLDExtraction:

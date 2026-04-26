@@ -4,8 +4,9 @@ Tests for JSON-LD ImageObject type
 Tests the extraction of Schema.org ImageObject structured data
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestImageObjectBasic:

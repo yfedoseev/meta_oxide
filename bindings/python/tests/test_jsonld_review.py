@@ -4,8 +4,9 @@ Tests for JSON-LD Review type (Schema.org)
 Tests the extraction and parsing of Review structured data following TDD approach.
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestReviewBasic:

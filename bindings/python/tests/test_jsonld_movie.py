@@ -4,8 +4,9 @@ Tests for JSON-LD Movie type
 Tests the extraction of Schema.org Movie structured data
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestMovieBasic:

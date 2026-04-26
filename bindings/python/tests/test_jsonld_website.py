@@ -4,8 +4,9 @@ Tests for JSON-LD WebSite type (Schema.org WebSite)
 Following TDD approach - tests written FIRST before implementation
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestWebSiteBasic:

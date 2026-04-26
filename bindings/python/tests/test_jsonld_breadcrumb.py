@@ -4,8 +4,9 @@ Tests for JSON-LD BreadcrumbList type
 Following TDD approach - these tests are written FIRST and will fail initially
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestBreadcrumbListBasic:

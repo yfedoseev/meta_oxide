@@ -5,8 +5,9 @@ Tests the extraction and parsing of SoftwareApplication structured data followin
 SoftwareApplication is used for software, apps, tools, and applications.
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestSoftwareApplicationBasic:

@@ -5,8 +5,9 @@ Tests the extraction of Schema.org AudioObject structured data.
 AudioObject is used for audio files, podcasts, music tracks, and audiobooks.
 """
 
-import meta_oxide
 import pytest
+
+import meta_oxide
 
 
 class TestAudioObjectBasic:

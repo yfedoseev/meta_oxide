@@ -360,13 +360,13 @@ app.UseExceptionHandler(errorApp =>
 ```csharp
 app.Use(async (context, next) =>
 {
-    _logger.LogInformation("Request: {Method} {Path}", 
-        context.Request.Method, 
+    _logger.LogInformation("Request: {Method} {Path}",
+        context.Request.Method,
         context.Request.Path);
 
     await next();
 
-    _logger.LogInformation("Response: {StatusCode}", 
+    _logger.LogInformation("Response: {StatusCode}",
         context.Response.StatusCode);
 });
 ```
