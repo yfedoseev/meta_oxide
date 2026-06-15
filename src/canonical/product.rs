@@ -193,8 +193,19 @@ fn jsonld_price(item: &JsonLdObject) -> Option<Money> {
 fn extract_offer_price(value: &Value) -> Option<Money> {
     match value {
         Value::Object(map) => {
-            let price = map.get("price").and_then(parse_number)?;
-            let currency = map.get("priceCurrency").and_then(value_to_string).unwrap_or_default();
+            // Plain `Offer.price`; for `AggregateOffer` use `lowPrice` (what a
+            // shopper can actually pay); else a nested `priceSpecification.price`.
+            let spec = map.get("priceSpecification").and_then(Value::as_object);
+            let price = map
+                .get("price")
+                .and_then(parse_number)
+                .or_else(|| map.get("lowPrice").and_then(parse_number))
+                .or_else(|| spec.and_then(|s| s.get("price")).and_then(parse_number))?;
+            let currency = map
+                .get("priceCurrency")
+                .and_then(value_to_string)
+                .or_else(|| spec.and_then(|s| s.get("priceCurrency")).and_then(value_to_string))
+                .unwrap_or_default();
             Some(Money::new(price, currency))
         }
         Value::Array(arr) => arr.iter().find_map(extract_offer_price),
@@ -316,5 +327,33 @@ mod tests {
         let html = r#"<html><body><h1>Just a heading</h1></body></html>"#;
         let graph = MetaParser::new().parse(html).unwrap();
         assert!(graph.canonical_product().is_none());
+    }
+
+    #[test]
+    fn aggregate_offer_uses_low_price() {
+        let html = r#"<script type="application/ld+json">
+          {"@context":"https://schema.org","@type":"Product","name":"Bolt Keyboard",
+           "offers":{"@type":"AggregateOffer","lowPrice":"89.00","highPrice":"129.00",
+                     "priceCurrency":"USD","availability":"https://schema.org/InStock"}}
+          </script>"#;
+        let graph = MetaParser::new().parse(html).unwrap();
+        let product = graph.canonical_product().expect("should find product");
+        let price = product.price.as_ref().unwrap();
+        assert_eq!(price.value.amount, 89.00);
+        assert_eq!(price.value.currency, "USD");
+    }
+
+    #[test]
+    fn price_specification_fallback() {
+        let html = r#"<script type="application/ld+json">
+          {"@context":"https://schema.org","@type":"Product","name":"Spec Item",
+           "offers":{"@type":"Offer",
+                     "priceSpecification":{"price":"5.00","priceCurrency":"GBP"}}}
+          </script>"#;
+        let graph = MetaParser::new().parse(html).unwrap();
+        let product = graph.canonical_product().expect("should find product");
+        let price = product.price.as_ref().unwrap();
+        assert_eq!(price.value.amount, 5.00);
+        assert_eq!(price.value.currency, "GBP");
     }
 }
